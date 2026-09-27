@@ -1,5 +1,6 @@
 // مخططات طوابق المبنى الواحد — 20 × 15 م (SVG بوحدة المتر)
-// الطابق السكني النموذجي: 4 شقق متطابقة (بمرايا) حول لب حركي مركزي
+// الطابق السكني النموذجي: 4 شقق متطابقة (بمرايا) حول لب حركي 25.2 م²
+// هندسة الشقة تُرسم من APARTMENT_LAYOUT في arch-data.ts (مصدر وحيد)
 import type { ReactNode } from "react";
 import {
   Car,
@@ -13,6 +14,7 @@ import {
   Stairs,
   WindowSeg,
 } from "./primitives";
+import { APARTMENT_LAYOUT, APARTMENT_GROSS } from "@/lib/arch-data";
 
 /** إطار موحد لمخططات الطوابق */
 function PlanFrame({ children, note }: { children: ReactNode; note?: string }) {
@@ -37,10 +39,11 @@ function PlanFrame({ children, note }: { children: ReactNode; note?: string }) {
   );
 }
 
-/* ================= اللب الحركي المشترك (يتكرر في كل الطوابق) ================= */
+/* ================= اللب الحركي المشترك (25.2 م² — يتكرر في كل الطوابق) ================= */
 function CoreLayout({ lobbyLabel, servicesLabel }: { lobbyLabel: string; servicesLabel: string }) {
   return (
     <g>
+      {/* بهو التوزيع — يفتح مباشرة على الشقق الأربعة */}
       <rect x={7.9} y={6.7} width={4.2} height={2.2} fill="#e7e5e4" stroke="#a8a29e" strokeWidth={0.06} />
       <PlanLabel x={10} y={7.55} size={0.32} weight={700} fill="#57534e">
         {lobbyLabel}
@@ -48,131 +51,128 @@ function CoreLayout({ lobbyLabel, servicesLabel }: { lobbyLabel: string; service
       <PlanLabel x={10} y={8.15} size={0.26} weight={600} fill="#78716c">
         مشترك
       </PlanLabel>
-      <rect x={7.9} y={8.9} width={4.2} height={1.8} fill="#fef9c3" stroke="#ca8a04" strokeWidth={0.07} />
-      <PlanLabel x={10} y={9.95} size={0.26} weight={700} fill="#a16207">
+      {/* رافعة صحية وكهرباء تخدم الشقق الأربعة */}
+      <rect x={7.9} y={8.9} width={4.2} height={1.6} fill="#fef9c3" stroke="#ca8a04" strokeWidth={0.07} />
+      <PlanLabel x={10} y={9.85} size={0.26} weight={700} fill="#a16207">
         {servicesLabel}
       </PlanLabel>
+      {/* درج الإخلاء بمتفلتين */}
       <Stairs x={7.9} y={4.5} w={2.6} h={2.2} steps={5} />
       <PlanLabel x={9.2} y={5.72} size={0.26} weight={700} fill="#44403c">
         درج
       </PlanLabel>
-      <ElevatorBox x={10.5} y={4.5} w={1.6} h={1.8} />
+      {/* مصعد 8 أشخاص */}
+      <ElevatorBox x={10.5} y={4.5} w={1.6} h={2.2} />
       <PlanLabel x={11.3} y={5.55} size={0.24} weight={700} fill="#1c1917">
         مصعد
       </PlanLabel>
       <Door x={9.3} y={6.7} r={0.6} rot={90} />
-      <Door x={11.3} y={6.3} r={0.6} rot={90} />
-      {/* الجدران الخارجية للب */}
-      <rect
-        x={7.9}
-        y={4.5}
-        width={4.2}
-        height={6.2}
-        fill="none"
-        stroke="#292524"
-        strokeWidth={0.12}
-      />
+      <Door x={11.3} y={6.7} r={0.6} rot={90} />
+      {/* الحدود الخارجية للب */}
+      <rect x={7.9} y={4.5} width={4.2} height={6.0} fill="none" stroke="#292524" strokeWidth={0.12} />
     </g>
   );
 }
 
 /* ================= القبو ================= */
 export function BasementPlan() {
-  const westStores = [0.2, 2.75, 5.3];
-  const eastStores = [12.45, 14.9, 17.35];
-  const westCars = [0.25, 2.8, 5.35];
-  const eastCars = [12.35, 14.9, 17.45];
+  const westStalls = [0.2, 2.8, 5.4];
+  const eastStalls = [12.45, 15.05];
   return (
     <PlanFrame note="مخطط القبو — مواقف ومخازن ومعدات">
-      {/* مخازن سكنية */}
-      {westStores.map((mx, i) => (
-        <g key={`ws-${mx}`}>
-          <rect x={mx} y={0.2} width={2.3} height={3.0} fill="#f5f5f4" stroke="#a8a29e" strokeWidth={0.06} />
-          <PlanLabel x={mx + 1.15} y={1.5} size={0.34} weight={700} fill="#57534e">
-            مخزن {i + 1}
-          </PlanLabel>
-          <PlanLabel x={mx + 1.15} y={2.1} size={0.28} weight={500} fill="#a8a29e">
-            2.2 × 3.0 م
+      {/* مواقف الصف الغربي (2.5 × 5.0 م) */}
+      {westStalls.map((bx, i) => (
+        <g key={`wg-${bx}`}>
+          <rect
+            x={bx}
+            y={0.2}
+            width={2.5}
+            height={5.0}
+            fill="none"
+            stroke="#d6d3d1"
+            strokeWidth={0.07}
+            strokeDasharray="0.35 0.25"
+          />
+          <Car x={bx + 0.3} y={1.05} />
+          <PlanLabel x={bx + 1.25} y={4.85} size={0.3} weight={700} fill="#78716c">
+            P{i + 1}
           </PlanLabel>
         </g>
       ))}
-      {eastStores.map((mx, i) => (
-        <g key={`es-${mx}`}>
-          <rect x={mx} y={0.2} width={2.3} height={3.0} fill="#f5f5f4" stroke="#a8a29e" strokeWidth={0.06} />
-          <PlanLabel x={mx + 1.15} y={1.5} size={0.34} weight={700} fill="#57534e">
-            مخزن {i + 4}
-          </PlanLabel>
-          <PlanLabel x={mx + 1.15} y={2.1} size={0.28} weight={500} fill="#a8a29e">
-            2.2 × 3.0 م
+      {/* مواقف الصف الشرقي */}
+      {eastStalls.map((bx, i) => (
+        <g key={`eg-${bx}`}>
+          <rect
+            x={bx}
+            y={0.2}
+            width={2.5}
+            height={5.0}
+            fill="none"
+            stroke="#d6d3d1"
+            strokeWidth={0.07}
+            strokeDasharray="0.35 0.25"
+          />
+          <Car x={bx + 0.3} y={1.05} />
+          <PlanLabel x={bx + 1.25} y={4.85} size={0.3} weight={700} fill="#78716c">
+            P{i + 4}
           </PlanLabel>
         </g>
       ))}
 
-      {/* غرف الخدمات */}
-      <rect x={0.2} y={3.6} width={3.5} height={1.9} fill="#fef9c3" stroke="#ca8a04" strokeWidth={0.08} />
-      <PlanLabel x={1.95} y={4.7} size={0.32} weight={700} fill="#a16207">
+      {/* ممر المناورة */}
+      <PlanLabel x={3.95} y={7.6} size={0.38} weight={700} fill="#78716c">
+        ممر مناورة بعرض 5.3 م
+      </PlanLabel>
+      <PlanLabel x={3.95} y={8.25} size={0.3} weight={600} fill="#a8a29e">
+        حلقة وصول حول اللب — تتصل بالمنحدر شرقاً
+      </PlanLabel>
+
+      {/* الخدمات جنوب الممر */}
+      <rect x={0.2} y={10.9} width={3.3} height={3.8} fill="#ccfbf1" stroke="#0d9488" strokeWidth={0.08} />
+      <PlanLabel x={1.85} y={12.6} size={0.3} weight={700} fill="#0f766e">
+        خزان مياه
+      </PlanLabel>
+      <PlanLabel x={1.85} y={13.15} size={0.28} weight={700} fill="#0f766e">
+        أرضي 20 م³
+      </PlanLabel>
+      <rect x={3.7} y={10.9} width={3.2} height={3.8} fill="#ccfbf1" stroke="#0d9488" strokeWidth={0.08} />
+      <PlanLabel x={5.3} y={12.6} size={0.3} weight={700} fill="#0f766e">
+        مضخات مياه
+      </PlanLabel>
+      <PlanLabel x={5.3} y={13.15} size={0.28} weight={600} fill="#14b8a6">
+        وضغط
+      </PlanLabel>
+      <rect x={7.1} y={10.9} width={2.3} height={3.8} fill="#f5f5f4" stroke="#a8a29e" strokeWidth={0.06} />
+      <PlanLabel x={8.25} y={12.6} size={0.3} weight={700} fill="#57534e">
+        مخزن 1
+      </PlanLabel>
+      <PlanLabel x={8.25} y={13.15} size={0.24} weight={500} fill="#a8a29e">
+        2.3 × 3.8 م
+      </PlanLabel>
+      <rect x={9.6} y={10.9} width={2.3} height={3.8} fill="#f5f5f4" stroke="#a8a29e" strokeWidth={0.06} />
+      <PlanLabel x={10.75} y={12.6} size={0.3} weight={700} fill="#57534e">
+        مخزن 2
+      </PlanLabel>
+      <PlanLabel x={10.75} y={13.15} size={0.24} weight={500} fill="#a8a29e">
+        2.3 × 3.8 م
+      </PlanLabel>
+      <rect x={12.1} y={10.9} width={3.6} height={3.8} fill="#fef9c3" stroke="#ca8a04" strokeWidth={0.08} />
+      <PlanLabel x={13.9} y={12.6} size={0.3} weight={700} fill="#a16207">
         الكهرباء الرئيسية
       </PlanLabel>
-      <rect x={4.1} y={3.6} width={3.4} height={1.9} fill="#f5f5f4" stroke="#a8a29e" strokeWidth={0.06} />
-      <PlanLabel x={5.8} y={4.7} size={0.32} weight={700} fill="#57534e">
+      <PlanLabel x={13.9} y={13.15} size={0.26} weight={600} fill="#ca8a04">
+        ولوحات التوزيع
+      </PlanLabel>
+      <rect x={15.9} y={10.9} width={3.9} height={3.8} fill="#fef9c3" stroke="#ca8a04" strokeWidth={0.08} />
+      <PlanLabel x={17.85} y={12.6} size={0.3} weight={700} fill="#a16207">
         التهوية والمولّدة
       </PlanLabel>
-      <rect x={12.45} y={3.6} width={3.6} height={1.9} fill="#ccfbf1" stroke="#0d9488" strokeWidth={0.08} />
-      <PlanLabel x={14.25} y={4.7} size={0.32} weight={700} fill="#0f766e">
-        مضخات مياه وضغط
-      </PlanLabel>
-      <rect x={16.45} y={3.6} width={3.3} height={1.9} fill="#ccfbf1" stroke="#0d9488" strokeWidth={0.08} />
-      <PlanLabel x={18.1} y={4.5} size={0.3} weight={700} fill="#0f766e">
-        خزان مياه أرضي
-      </PlanLabel>
-      <PlanLabel x={18.1} y={5.1} size={0.28} weight={600} fill="#14b8a6">
-        20 م³
+      <PlanLabel x={17.85} y={13.15} size={0.26} weight={600} fill="#ca8a04">
+        الاحتياطي
       </PlanLabel>
 
       {/* اللب الحركي */}
       <CoreLayout lobbyLabel="بهو المصعد" servicesLabel="قاطع فرعي وكهرباء" />
-
-      {/* مواقف الصف الغربي */}
-      {westCars.map((bx) => (
-        <g key={`wc-${bx}`}>
-          <rect
-            x={bx}
-            y={5.95}
-            width={2.3}
-            height={3.5}
-            fill="none"
-            stroke="#d6d3d1"
-            strokeWidth={0.07}
-            strokeDasharray="0.35 0.25"
-          />
-          <Car x={bx + 0.2} y={6.1} />
-        </g>
-      ))}
-
-      {/* ممر الحركة */}
-      <PlanLabel x={3.95} y={10.7} size={0.38} weight={700} fill="#78716c">
-        ممر حركة السيارات
-      </PlanLabel>
-      <PlanLabel x={3.95} y={11.35} size={0.3} weight={600} fill="#a8a29e">
-        يتصل بالمنحدر جنوباً
-      </PlanLabel>
-
-      {/* مواقف الصف الشرقي */}
-      {eastCars.map((bx) => (
-        <g key={`ec-${bx}`}>
-          <rect
-            x={bx}
-            y={11.2}
-            width={2.3}
-            height={3.4}
-            fill="none"
-            stroke="#d6d3d1"
-            strokeWidth={0.07}
-            strokeDasharray="0.35 0.25"
-          />
-          <Car x={bx + 0.2} y={11.35} />
-        </g>
-      ))}
 
       {/* المنحدر */}
       <g>
@@ -196,7 +196,7 @@ export function BasementPlan() {
       </g>
 
       <PlanLabel x={10} y={-0.75} size={0.5} weight={800} fill="#0f766e">
-        القبو — ≈ 6 مواقف سيارات + مخازن ومعدات
+        القبو — 5 مواقف سيارات (2.5 × 5.0 م) + مخزنان ومعدات وخدمات
       </PlanLabel>
     </PlanFrame>
   );
@@ -239,11 +239,11 @@ export function GroundPlan() {
 
       {/* اللب الحركي + ممر الوصل */}
       <CoreLayout lobbyLabel="بهو المصعد" servicesLabel="ممر وصل داخلي" />
-      <rect x={7.9} y={10.7} width={4.2} height={4.1} fill="#e7e5e4" stroke="#a8a29e" strokeWidth={0.06} />
+      <rect x={7.9} y={10.5} width={4.2} height={4.3} fill="#e7e5e4" stroke="#a8a29e" strokeWidth={0.06} />
       <PlanLabel x={10} y={12.9} size={0.32} weight={700} fill="#57534e">
         بهو انتظار شرقي
       </PlanLabel>
-      <Door x={7.9} y={10.4} r={0.8} rot={0} />
+      <Door x={7.9} y={10.45} r={0.8} rot={0} />
 
       {/* الخدمات الشرقية */}
       <rect x={12.5} y={0.2} width={7.3} height={3.2} fill="#f5f5f4" stroke="#a8a29e" strokeWidth={0.06} />
@@ -314,64 +314,86 @@ export function GroundPlan() {
   );
 }
 
-/* ================= الطابق السكني النموذجي (4 شقق) ================= */
-interface UZone {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  fill: string;
-  label?: string;
-  lx?: number;
-  ly?: number;
-  ls?: number;
-}
+/* ================= الطابق السكني النموذجي (4 شقق × 68.7 م²) ================= */
 
-// تخطيط الشقة المرجعية (شمال-غرب) — يُرسم للوحدات الأخرى بالمرايا
-const NW_ZONES: UZone[] = [
-  { x: 0, y: 0, w: 3.7, h: 3.2, fill: "#fafaf9", label: "نوم رئيسية", lx: 1.3, ly: 2.9, ls: 0.3 },
-  { x: 2.5, y: 0, w: 1.2, h: 2.0, fill: "#f0fdfa" }, // حمّام رئيسي ملحق
-  { x: 3.7, y: 0, w: 2.4, h: 3.2, fill: "#fafaf9", label: "نوم ثانية", lx: 4.9, ly: 1.7, ls: 0.28 },
-  { x: 6.1, y: 0, w: 1.8, h: 3.2, fill: "#fffbeb", label: "مطبخ", lx: 7.0, ly: 1.7, ls: 0.28 },
-  { x: 7.9, y: 0, w: 2.1, h: 3.3, fill: "#fafaf9", label: "نوم ثالثة", lx: 8.95, ly: 1.7, ls: 0.26 },
-  { x: 4.4, y: 3.2, w: 5.6, h: 1.3, fill: "#e7e5e4", label: "ممر", lx: 7.3, ly: 3.98, ls: 0.26 },
-  { x: 0, y: 3.2, w: 4.4, h: 1.3, fill: "#ecfdf5" },
-  { x: 0, y: 4.5, w: 5.8, h: 3.0, fill: "#ecfdf5", label: "معيشة", lx: 2.4, ly: 6.2, ls: 0.34 },
-  { x: 5.8, y: 4.5, w: 2.1, h: 3.0, fill: "#f5f5f4", label: "بهو", lx: 6.85, ly: 5.55, ls: 0.28 },
-  { x: 4.4, y: 6.0, w: 1.4, h: 1.5, fill: "#f0fdfa", label: "حمّام", lx: 5.1, ly: 6.88, ls: 0.22 },
+// مواضع العناوين داخل الشقة المرجعية (إحداثيات محلية — تُعكس بالمرايا)
+const UNIT_LABELS: Record<string, { lx: number; ly: number; ls: number; short: string }> = {
+  "غرفة النوم الرئيسية": { lx: 1.675, ly: 2.05, ls: 0.26, short: "نوم رئيسية" },
+  "غرفة النوم الثانية": { lx: 4.36, ly: 2.05, ls: 0.24, short: "نوم ثانية" },
+  "غرفة النوم الثالثة": { lx: 6.6, ly: 2.05, ls: 0.24, short: "نوم ثالثة" },
+  "غرفة النوم الرابعة (أطفال/مكتب)": { lx: 8.8, ly: 2.05, ls: 0.21, short: "نوم رابعة" },
+  "المعيشة والطعام": { lx: 2.0, ly: 6.3, ls: 0.28, short: "معيشة وطعام" },
+  المطبخ: { lx: 5.03, ly: 6.05, ls: 0.24, short: "مطبخ" },
+  "الحمّام الرئيسي": { lx: 8.86, ly: 3.98, ls: 0.19, short: "حمّام رئيسي" },
+  "الحمّام الثانوي": { lx: 7.32, ly: 5.35, ls: 0.16, short: "1.00 م²" },
+  "بهو المدخل": { lx: 6.5, ly: 6.6, ls: 0.22, short: "بهو" },
+  "ممر التوزيع (بخزائن مدمجة)": { lx: 5.6, ly: 4.0, ls: 0.22, short: "ممر توزيع" },
+};
+
+// نوافذ الشقة المرجعية (إحداثيات محلية)
+const UNIT_WINDOWS = [
+  { x: 0.7, y: -0.15, w: 1.8, h: 0.3 },
+  { x: 3.7, y: -0.15, w: 1.4, h: 0.3 },
+  { x: 5.9, y: -0.15, w: 1.2, h: 0.3 },
+  { x: 8.2, y: -0.15, w: 1.2, h: 0.3 },
+  { x: -0.15, y: 0.7, w: 0.3, h: 1.6 },
+  { x: -0.15, y: 4.9, w: 0.3, h: 2.0 },
 ];
 
-function UnitZones({ fx, fy }: { fx: boolean; fy: boolean }) {
+// أبواب الشقة المرجعية (إحداثيات محلية)
+const UNIT_DOORS = [
+  { x: 2.2, y: 3.32, r: 0.6, rot: -90 },
+  { x: 4.3, y: 3.32, r: 0.55, rot: -90 },
+  { x: 6.3, y: 3.32, r: 0.55, rot: -90 },
+  { x: 8.6, y: 3.32, r: 0.55, rot: -90 },
+  { x: 4.8, y: 4.52, r: 0.55, rot: 90 },
+  { x: 7.9, y: 4.35, r: 0.45, rot: 180 },
+  { x: 6.92, y: 4.68, r: 0.45, rot: 180 },
+];
+
+/** رسم وحدة سكنية كاملة بالمرايا الأفقية/الرأسية */
+function ApartmentUnit({ fx, fy }: { fx: boolean; fy: boolean }) {
+  const tx = (x: number, w: number) => (fx ? 20 - x - w : x);
+  const ty = (y: number, h: number) => (fy ? 15 - y - h : y);
+  const px = (x: number) => (fx ? 20 - x : x);
+  const py = (y: number) => (fy ? 15 - y : y);
+  const rot = (r: number) => (fx && fy ? 180 + r : fx ? 180 - r : fy ? -r : r);
+
   return (
     <g>
-      {NW_ZONES.map((z, i) => {
-        const x = fx ? 20 - z.x - z.w : z.x;
-        const y = fy ? 15 - z.y - z.h : z.y;
+      {/* الفراغات */}
+      {APARTMENT_LAYOUT.map((room) =>
+        room.parts.map((p, i) => (
+          <rect
+            key={`${room.name}-${i}`}
+            x={tx(p.x, p.w)}
+            y={ty(p.y, p.h)}
+            width={p.w}
+            height={p.h}
+            fill={room.color}
+            stroke="#a8a29e"
+            strokeWidth={0.045}
+          />
+        )),
+      )}
+      {/* العناوين */}
+      {APARTMENT_LAYOUT.map((room) => {
+        const lb = UNIT_LABELS[room.name];
+        if (!lb) return null;
         return (
-          <g key={i}>
-            <rect
-              x={x}
-              y={y}
-              width={z.w}
-              height={z.h}
-              fill={z.fill}
-              stroke="#a8a29e"
-              strokeWidth={0.05}
-            />
-            {z.label && (
-              <PlanLabel
-                x={fx ? 20 - (z.lx ?? 0) : z.lx ?? 0}
-                y={fy ? 15 - (z.ly ?? 0) : z.ly ?? 0}
-                size={z.ls ?? 0.28}
-                weight={700}
-                fill="#57534e"
-              >
-                {z.label}
-              </PlanLabel>
-            )}
-          </g>
+          <PlanLabel key={room.name} x={px(lb.lx)} y={py(lb.ly)} size={lb.ls} weight={700} fill="#57534e">
+            {lb.short}
+          </PlanLabel>
         );
       })}
+      {/* النوافذ */}
+      {UNIT_WINDOWS.map((wn, i) => (
+        <WindowSeg key={`w-${i}`} x={tx(wn.x, wn.w)} y={ty(wn.y, wn.h)} w={wn.w} h={wn.h} />
+      ))}
+      {/* الأبواب الداخلية */}
+      {UNIT_DOORS.map((d, i) => (
+        <Door key={`d-${i}`} x={px(d.x)} y={py(d.y)} r={d.r} rot={rot(d.rot)} />
+      ))}
     </g>
   );
 }
@@ -380,26 +402,26 @@ export function TypicalPlan() {
   return (
     <PlanFrame note="مخطط الطابق السكني النموذجي — أربع شقق متطابقة حول لب الدرج والمصعد">
       {/* الشقق الأربع (مرايا حول المحورين) */}
-      <UnitZones fx={false} fy={false} />
-      <UnitZones fx={true} fy={false} />
-      <UnitZones fx={false} fy={true} />
-      <UnitZones fx={true} fy={true} />
+      <ApartmentUnit fx={false} fy={false} />
+      <ApartmentUnit fx={true} fy={false} />
+      <ApartmentUnit fx={false} fy={true} />
+      <ApartmentUnit fx={true} fy={true} />
 
       {/* أسماء الشقق */}
-      <PlanLabel x={2.9} y={7.32} size={0.44} weight={800} fill="#047857">
-        الشقة أ ≈ 66 م²
+      <PlanLabel x={2.9} y={7.32} size={0.42} weight={800} fill="#047857">
+        الشقة أ — {APARTMENT_GROSS.toFixed(2)} م²
       </PlanLabel>
-      <PlanLabel x={17.1} y={7.32} size={0.44} weight={800} fill="#b45309">
-        الشقة ب ≈ 66 م²
+      <PlanLabel x={17.1} y={7.32} size={0.42} weight={800} fill="#b45309">
+        الشقة ب — {APARTMENT_GROSS.toFixed(2)} م²
       </PlanLabel>
-      <PlanLabel x={2.9} y={7.78} size={0.44} weight={800} fill="#0f766e">
-        الشقة ج ≈ 66 م²
+      <PlanLabel x={2.9} y={7.78} size={0.42} weight={800} fill="#0f766e">
+        الشقة ج — {APARTMENT_GROSS.toFixed(2)} م²
       </PlanLabel>
-      <PlanLabel x={17.1} y={7.78} size={0.44} weight={800} fill="#be123c">
-        الشقة د ≈ 66 م²
+      <PlanLabel x={17.1} y={7.78} size={0.42} weight={800} fill="#be123c">
+        الشقة د — {APARTMENT_GROSS.toFixed(2)} م²
       </PlanLabel>
 
-      {/* اللب الحركي المركزي */}
+      {/* اللب الحركي المركزي 25.2 م² */}
       <CoreLayout lobbyLabel="بهو التوزيع" servicesLabel="رافعة صحية وكهرباء" />
 
       {/* جدران الفصل بين الشقق */}
@@ -407,43 +429,15 @@ export function TypicalPlan() {
       <line x1={12.1} y1={7.5} x2={20} y2={7.5} stroke="#57534e" strokeWidth={0.1} />
       <line x1={10} y1={0} x2={10} y2={4.5} stroke="#57534e" strokeWidth={0.1} />
       <line x1={10} y1={10.5} x2={10} y2={15} stroke="#57534e" strokeWidth={0.1} />
-      <line x1={7.9} y1={0} x2={7.9} y2={4.5} stroke="#a8a29e" strokeWidth={0.06} />
-      <line x1={7.9} y1={10.5} x2={7.9} y2={15} stroke="#a8a29e" strokeWidth={0.06} />
-      <line x1={12.1} y1={0} x2={12.1} y2={4.5} stroke="#a8a29e" strokeWidth={0.06} />
-      <line x1={12.1} y1={10.5} x2={12.1} y2={15} stroke="#a8a29e" strokeWidth={0.06} />
 
-      {/* أبواب الشقق من البهو */}
-      <Door x={7.9} y={7.4} r={0.7} rot={180} />
-      <Door x={7.9} y={7.6} r={0.7} rot={180} />
-      <Door x={12.1} y={7.4} r={0.7} rot={0} />
-      <Door x={12.1} y={7.6} r={0.7} rot={0} />
-
-      {/* نوافذ الواجهة الشمالية */}
-      <WindowSeg x={0.8} y={-0.15} w={1.8} h={0.3} />
-      <WindowSeg x={4.1} y={-0.15} w={1.6} h={0.3} />
-      <WindowSeg x={6.3} y={-0.15} w={1.2} h={0.3} />
-      <WindowSeg x={8.35} y={-0.15} w={1.3} h={0.3} />
-      <WindowSeg x={10.35} y={-0.15} w={1.3} h={0.3} />
-      <WindowSeg x={12.5} y={-0.15} w={1.2} h={0.3} />
-      <WindowSeg x={14.3} y={-0.15} w={1.6} h={0.3} />
-      <WindowSeg x={17.4} y={-0.15} w={1.8} h={0.3} />
-      {/* الواجهة الجنوبية (مرآة) */}
-      <WindowSeg x={0.8} y={14.85} w={1.8} h={0.3} />
-      <WindowSeg x={4.1} y={14.85} w={1.6} h={0.3} />
-      <WindowSeg x={6.3} y={14.85} w={1.2} h={0.3} />
-      <WindowSeg x={8.35} y={14.85} w={1.3} h={0.3} />
-      <WindowSeg x={10.35} y={14.85} w={1.3} h={0.3} />
-      <WindowSeg x={12.5} y={14.85} w={1.2} h={0.3} />
-      <WindowSeg x={14.3} y={14.85} w={1.6} h={0.3} />
-      <WindowSeg x={17.4} y={14.85} w={1.8} h={0.3} />
-      {/* الواجهتان الغربية والشرقية */}
-      <WindowSeg x={-0.15} y={5.0} w={0.3} h={2.0} />
-      <WindowSeg x={-0.15} y={8.0} w={0.3} h={2.0} />
-      <WindowSeg x={19.85} y={5.0} w={0.3} h={2.0} />
-      <WindowSeg x={19.85} y={8.0} w={0.3} h={2.0} />
+      {/* أبواب الشقق من بهو التوزيع */}
+      <Door x={7.9} y={7.2} r={0.55} rot={180} />
+      <Door x={7.9} y={7.95} r={0.55} rot={180} />
+      <Door x={12.1} y={7.2} r={0.55} rot={0} />
+      <Door x={12.1} y={7.95} r={0.55} rot={0} />
 
       <PlanLabel x={10} y={-0.95} size={0.5} weight={800} fill="#0f766e">
-        الطابق السكني النموذجي — 4 شقق × (5 غرف + حمّامان + بهو)
+        الطابق السكني النموذجي — 4 شقق × 68.70 م² + لب 25.20 م² = 300 م²
       </PlanLabel>
     </PlanFrame>
   );
@@ -499,7 +493,7 @@ export function RoofPlan() {
         strokeDasharray="0.4 0.25"
       />
       {pvCols.map((cx) =>
-        pvRows.map((ry) => <PvTile key={`${cx}-${ry}`} x={cx} y={ry} />)
+        pvRows.map((ry) => <PvTile key={`${cx}-${ry}`} x={cx} y={ry} />),
       )}
       <PlanLabel x={16.1} y={14.35} size={0.4} weight={800} fill="#b45309">
         المصفوفة الرئيسية — 32 لوحاً كهروضوئياً
@@ -522,7 +516,7 @@ export function RoofPlan() {
         ألواح مساندة — 8 لوحات
       </PlanLabel>
 
-      {/* السخانات الشمسية */}
+      {/* السخّانات الشمسية */}
       <rect x={0.5} y={5.1} width={3.8} height={3.2} fill="#ffedd5" stroke="#ea580c" strokeWidth={0.08} />
       <rect x={0.85} y={5.55} width={1.35} height={1.35} fill="#fdba74" stroke="#c2410c" strokeWidth={0.07} />
       <rect x={2.5} y={5.55} width={1.35} height={1.35} fill="#fdba74" stroke="#c2410c" strokeWidth={0.07} />
@@ -550,6 +544,18 @@ export function RoofPlan() {
       </PlanLabel>
       <PlanLabel x={4.0} y={14.05} size={0.34} weight={700} fill="#0d9488">
         4 × 2000 لتر على قاعدة خرسانية
+      </PlanLabel>
+
+      {/* مسار الكابلات */}
+      <path
+        d="M 12.7 8.2 L 11.6 8.2 L 11.6 6.5"
+        fill="none"
+        stroke="#b45309"
+        strokeWidth={0.08}
+        strokeDasharray="0.3 0.2"
+      />
+      <PlanLabel x={12.15} y={9.0} size={0.26} weight={600} fill="#b45309">
+        مسار كابلات
       </PlanLabel>
 
       {/* هويات تهوية ودش برق */}

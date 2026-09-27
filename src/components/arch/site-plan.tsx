@@ -40,11 +40,13 @@ export function SitePlan() {
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
           <InfoRow label="الأبعاد" value="20.00 م × 15.00 م" />
+          <InfoRow label="التوجيه الشمسي" value="الواجهات الطويلة شمال – جنوب" />
           <InfoRow label="عدد الطوابق" value="قبو + أرضي + 3 سكنية + سطح" />
           <InfoRow label="الشقق في المبنى" value="12 شقة (4 شقق × 3 طوابق)" />
-          <InfoRow label="الغرف إجمالاً" value="60 غرفة + 24 حمّاماً + 12 بهو" />
+          <InfoRow label="الغرف إجمالاً" value="60 غرفة رئيسية + 24 حمّاماً + 12 بهو" />
           <InfoRow label="الرافعة (مصعد)" value="مصعد واحد — 8 أشخاص" />
-          <InfoRow label="مواقف القبو" value="≈ 6 سيارات + مخازن" />
+          <InfoRow label="مواقف القبو" value="5 مواقف (2.5 × 5.0 م) + مخزنان" />
+          <InfoRow label="مواقف المشروع" value="23 موقفاً (20 مغطى + 3 زوار)" />
           <Separator />
           <div className="rounded-lg bg-amber-50 border border-amber-200 p-3">
             <p className="font-bold text-amber-800 text-[13px] mb-1">السطح المجهّز</p>
