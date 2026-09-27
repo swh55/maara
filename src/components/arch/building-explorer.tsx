@@ -22,9 +22,9 @@ type FloorTab = "roof" | "typical" | "ground" | "basement";
 
 const STACK = [
   { id: "roof", label: "السطح", sub: "منظومة شمسية + خزانات", color: "bg-amber-500", tab: "roof" as FloorTab, icon: Sun },
-  { id: "f3", label: "الطابق الثالث السكني", sub: "3 شقق — 300 م²", color: "bg-emerald-600", tab: "typical" as FloorTab, icon: BedDouble },
-  { id: "f2", label: "الطابق الثاني السكني", sub: "3 شقق — 300 م²", color: "bg-emerald-600", tab: "typical" as FloorTab, icon: BedDouble },
-  { id: "f1", label: "الطابق الأول السكني", sub: "3 شقق — 300 م²", color: "bg-emerald-600", tab: "typical" as FloorTab, icon: BedDouble },
+  { id: "f3", label: "الطابق الثالث السكني", sub: "4 شقق — 300 م²", color: "bg-emerald-600", tab: "typical" as FloorTab, icon: BedDouble },
+  { id: "f2", label: "الطابق الثاني السكني", sub: "4 شقق — 300 م²", color: "bg-emerald-600", tab: "typical" as FloorTab, icon: BedDouble },
+  { id: "f1", label: "الطابق الأول السكني", sub: "4 شقق — 300 م²", color: "bg-emerald-600", tab: "typical" as FloorTab, icon: BedDouble },
   { id: "ground", label: "الطابق الأرضي", sub: "بهو المدخل + خدمات", color: "bg-stone-500", tab: "ground" as FloorTab, icon: DoorIcon },
   { id: "basement", label: "القبو", sub: "مواقف + مخازن + معدات", color: "bg-zinc-600", tab: "basement" as FloorTab, icon: Car },
 ];
@@ -112,8 +112,8 @@ export function BuildingExplorer() {
             badge={{ text: "300 م²", className: "bg-zinc-700" }}
             title="القبو — مواقف السيارات والمخازن"
             features={[
-              { icon: Car, text: "≈ 14 موقفاً خاصاً للسكان + ممر حركة بعرض 5 م" },
-              { icon: Warehouse, text: "6 مخازن سكنية (2.4 × 3.0 م) للعفش والمواسم" },
+              { icon: Car, text: "≈ 6 مواقف خاصة للسكان + ممر حركة متصل بالمنحدر" },
+              { icon: Warehouse, text: "6 مخازن سكنية (2.2 × 3.0 م) للعفش والمواسم" },
               { icon: Zap, text: "غرفة كهرباء رئيسية + غرفة تهوية ومولّدة احتياطي" },
               { icon: Droplets, text: "خزان مياه أرضي 20 م³ + غرفة مضخات وضغط" },
             ]}
@@ -129,8 +129,8 @@ export function BuildingExplorer() {
             features={[
               { icon: DoorIcon, text: "بهو مدخل رئيسي بصناديق بريد ومقاعد انتظار" },
               { icon: ArrowUpDown, text: "لب حركي: مصعد (8 أشخاص) + درج متفلتين" },
-              { icon: BedDouble, text: "صالة متعددة الأغراض 60 م² لاجتماعات السكان" },
-              { icon: Zap, text: "غرف عدادات وكهرباء وقاطع رئيسي وإدارة وحارس" },
+              { icon: BedDouble, text: "صالة متعددة الأغراض 33 م² + حضانة أطفال" },
+              { icon: Zap, text: "إدارة واستقبال وأمن وعدادات وغرفة نفايات بباب خدمة خارجي" },
             ]}
             plan={<GroundPlan />}
           />
@@ -140,12 +140,12 @@ export function BuildingExplorer() {
         <TabsContent value="typical" className="mt-4">
           <FloorLayout
             badge={{ text: "300 م²", className: "bg-emerald-700" }}
-            title="الطابق السكني النموذجي — ثلاث شقق حول المصعد"
+            title="الطابق السكني النموذجي — أربع شقق حول المصعد"
             features={[
-              { icon: BedDouble, text: "3 شقق × ≈ 100 م² (5 غرف + حمّامان + بهو مدخل)" },
-              { icon: DoorIcon, text: "بهو توزيع مشترك يخدم الشقق الثلاث والدرج والمصعد" },
-              { icon: Sun, text: "شقق بثلاث جهات: شمالية وشرقية/غربية وجنوبية" },
-              { icon: Layers, text: "التوزيع الداخلي التفصيلي في قسم «الشقة النموذجية»" },
+              { icon: BedDouble, text: "4 شقق متطابقة × ≈ 66 م² (5 غرف + حمّامان + بهو مدخل)" },
+              { icon: DoorIcon, text: "بهو توزيع مركزي يفتح مباشرة على الشقق الأربعة والدرج والمصعد" },
+              { icon: Sun, text: "كل شقة على زاويتين خارجيتين: إضاءة طبيعية لكل الغرف" },
+              { icon: Layers, text: "رافعة صحية وكهربائية مركزية تخدم الشقق الأربعة — والتفاصيل في قسم «الشقة النموذجية»" },
             ]}
             plan={<TypicalPlan />}
           />

@@ -1,4 +1,5 @@
 import {
+  Accessibility,
   ArrowUpDown,
   Bath,
   BedDouble,
@@ -6,12 +7,19 @@ import {
   Car,
   Compass,
   DoorOpen,
+  Droplets,
+  Flame,
   Layers,
   Map,
   Ruler,
+  ShieldCheck,
   Sun,
   Table2,
+  Thermometer,
   Trees,
+  Volume2,
+  Wind,
+  Zap,
 } from "lucide-react";
 import { SitePlan } from "@/components/arch/site-plan";
 import { BuildingExplorer } from "@/components/arch/building-explorer";
@@ -19,6 +27,7 @@ import { ApartmentPlanSVG, ApartmentRoomsTable } from "@/components/arch/apartme
 import {
   BUA_TABLE,
   BUILDING_FOOTPRINT,
+  DESIGN_STANDARDS,
   PROJECT_STATS,
   SITE,
 } from "@/lib/arch-data";
@@ -44,10 +53,22 @@ const STAT_ICONS: Record<string, React.ComponentType<{ className?: string }>> = 
   tree: Trees,
 };
 
+const STANDARD_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  sun: Sun,
+  flame: Flame,
+  accessibility: Accessibility,
+  thermometer: Thermometer,
+  volume: Volume2,
+  wind: Wind,
+  droplets: Droplets,
+  zap: Zap,
+};
+
 const NAV = [
   { href: "#site", label: "مخطط الموقع" },
   { href: "#building", label: "المبنى طابقاً بطابق" },
   { href: "#apartment", label: "الشقة النموذجية" },
+  { href: "#standards", label: "معايير التصميم" },
   { href: "#numbers", label: "ميزان المساحات" },
 ];
 
@@ -106,8 +127,8 @@ export default function Home() {
             <p className="mt-5 text-base sm:text-lg text-stone-300 leading-8 max-w-3xl">
               أربعة مبانٍ سكنية تشغل 60% من مساحة الأرض (1200 م²)، ويخصص الباقي لطريق خدمة
               دائري وحدائق ومداخل. كل مبنى يتكون من قبو وأرضي وثلاثة طوابق سكنية وسطح مجهّز
-              بمنظومة طاقة شمسية وخزانات مياه، مع مصعد في كل مبنى و36 شقة يحتوي كل منها على
-              خمس غرف وحمّامين وبهو مدخل.
+              بمنظومة طاقة شمسية وخزانات مياه، مع مصعد في كل مبنى و48 شقة (≈ 66 م²) يحتوي
+              كل منها على خمس غرف وحمّامين وبهو مدخل.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
@@ -122,7 +143,7 @@ export default function Home() {
                 className="inline-flex items-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 px-5 py-3 text-sm font-bold transition-colors"
               >
                 <Ruler className="size-4" />
-                مخطط الشقة 100 م²
+                مخطط الشقة 66 م²
               </a>
             </div>
 
@@ -130,7 +151,7 @@ export default function Home() {
             <dl className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-3 max-w-4xl">
               {[
                 { k: "بصمة البناء", v: "60% — 1200 م²" },
-                { k: "الشقق", v: "36 شقة" },
+                { k: "الشقق", v: "48 × 66 م²" },
                 { k: "المساحة المبنية", v: "6,000 م²" },
                 { k: "الطاقة الشمسية", v: "72 ك.و ذروة" },
               ].map((s) => (
@@ -148,7 +169,7 @@ export default function Home() {
           <SectionHeader
             icon={<Layers className="size-5" />}
             title="أرقام المشروع"
-            subtitle="حصيلة تصميم تلبي كامل المتطلبات: 4 مبانٍ، 5 مستويات لكل مبنى، و36 شقة عائلية"
+            subtitle="حصيلة تصميم تلبي كامل المتطلبات: 4 مبانٍ، 5 مستويات لكل مبنى، و48 شقة عائلية"
           />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {PROJECT_STATS.map((s) => {
@@ -197,8 +218,8 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
             <SectionHeader
               icon={<BedDouble className="size-5" />}
-              title="الشقة النموذجية — 100 م²"
-              subtitle="خمس غرف (معيشة + مطبخ + 3 غرف نوم) مع حمّام رئيسي وحمّام ثانوي وبهو مدخل وممر توزيع"
+              title="الشقة النموذجية — ≈ 66 م²"
+              subtitle="خمس غرف (معيشة + مطبخ + 3 غرف نوم) مع حمّام رئيسي وحمّام ثانوي وبهو مدخل وممر توزيع — تخطيط مكرر أربع مرات في كل طابق"
             />
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] items-start">
               <div className="rounded-2xl border border-stone-200 bg-stone-50/60 p-3 sm:p-5 plan-shadow">
@@ -214,12 +235,45 @@ export default function Home() {
                 </div>
                 <ApartmentRoomsTable />
                 <p className="text-[13px] leading-6 text-stone-500 bg-stone-50 border border-stone-200 rounded-xl p-3.5">
-                  تكرر هذا التوزيع الداخلي <strong className="text-stone-700">3 مرات في كل طابق</strong> ×
-                  3 طوابق سكنية × 4 مبانٍ = <strong className="text-emerald-700">36 شقة</strong> بإجمالي
-                  180 غرفة و72 حمّاماً في المشروع كاملاً.
+                  يتكرر هذا التوزيع الداخلي <strong className="text-stone-700">4 مرات في كل طابق</strong> ×
+                  3 طوابق سكنية × 4 مبانٍ = <strong className="text-emerald-700">48 شقة</strong> بإجمالي
+                  240 غرفة و96 حمّاماً في المشروع كاملاً.
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ===== معايير التصميم الحديثة ===== */}
+        <section id="standards" className="bg-stone-100/60 border-b border-stone-200 scroll-mt-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+            <SectionHeader
+              icon={<ShieldCheck className="size-5" />}
+              title="الالتزام بمعايير التصميم الحديث"
+              subtitle="مراجعة شاملة للمخطط وفق متطلبات المباني السكنية الحديثة: السلامة، الوصول الشامل، الكفاءة الحرارية والصوتية، وجودة البيئة الداخلية"
+            />
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {DESIGN_STANDARDS.map((s) => {
+                const Icon = STANDARD_ICONS[s.icon] ?? ShieldCheck;
+                return (
+                  <div
+                    key={s.title}
+                    className="rounded-2xl border border-stone-200 bg-white p-4 hover:shadow-md transition-shadow"
+                  >
+                    <span className="grid place-items-center size-9 rounded-xl bg-emerald-100 text-emerald-700 mb-3">
+                      <Icon className="size-4" />
+                    </span>
+                    <h4 className="font-extrabold text-stone-900 text-[15px]">{s.title}</h4>
+                    <p className="text-[13px] leading-6 text-stone-600 mt-1.5">{s.d}</p>
+                  </div>
+                );
+              })}
+            </div>
+            <p className="mt-5 text-[13px] leading-6 text-stone-500 bg-white border border-stone-200 rounded-xl p-4">
+              ملاحظة: هذا المخطط بمرحلة التصميم التخطيطي (Schematic Design)، وتخضع جميع التفاصيل
+              الإنشائية والحريقية والميكانيكية للاعتماد النهائي من الجهات المختصة ووفق الكود المحلي
+              المعتمد في منطقة المشروع قبل التنفيذ.
+            </p>
           </div>
         </section>
 
@@ -339,7 +393,7 @@ export default function Home() {
               },
               {
                 t: "كفاءة التوزيع",
-                d: "لب حركي واحد (درج + مصعد) يخدم 3 شقق في الطابق، فيقلل المساحات المشتركة ويرفع كفاءة الشقق إلى أقصاها.",
+                d: "لب حركي مركزي (درج + مصعد) يخدم 4 شقق متطابقة في الطابق بمداخل مباشرة، فيقلل المساحات المشتركة ويرفع كفاءة الشقق.",
                 c: "border-amber-300 bg-amber-50",
               },
               {
@@ -366,7 +420,7 @@ export default function Home() {
             </span>
             <div>
               <p className="font-bold text-white text-sm">المجمع السكني الأخضر — مخطط معماري أولي</p>
-              <p className="text-xs mt-0.5">قطعة 50 × 40 م | 4 مبانٍ | 36 شقة | مستوى تصميم تخطيطي قابل للتطوير التنفيذي</p>
+              <p className="text-xs mt-0.5">قطعة 50 × 40 م | 4 مبانٍ | 48 شقة | مستوى تصميم تخطيطي قابل للتطوير التنفيذي</p>
             </div>
           </div>
           <p className="text-xs text-stone-500 text-center sm:text-left">
