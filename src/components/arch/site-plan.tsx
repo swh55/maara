@@ -42,12 +42,12 @@ export function SitePlan() {
           <InfoRow label="الأبعاد" value="20.00 م × 15.00 م" />
           <InfoRow label="التوجيه الشمسي" value="الواجهات الطويلة شمال – جنوب" />
           <InfoRow label="عدد الطوابق" value="قبو + أرضي + 3 سكنية + سطح" />
-          <InfoRow label="الشقق في المبنى" value="12 شقة (4 شقق × 3 طوابق)" />
-          <InfoRow label="الشرفات" value="12 شرفة ركنية (4 × 3 طوابق)" />
-          <InfoRow label="الغرف إجمالاً" value="60 غرفة رئيسية + 24 حمّاماً + 12 بهو" />
+          <InfoRow label="الشقق في المبنى" value="9 شقق (3 شقق × 3 طوابق)" />
+          <InfoRow label="الشرفات" value="9 شرفات ركنية (3 × 3 طوابق)" />
+          <InfoRow label="الغرف إجمالاً" value="45 غرفة رئيسية + 18 حمّاماً + 9 بهو" />
           <InfoRow label="الرافعة (مصعد)" value="مصعد واحد — 8 أشخاص" />
-          <InfoRow label="مواقف القبو" value="5 مواقف (2.5 × 5.0 م) + مخزنان" />
-          <InfoRow label="مواقف المشروع" value="23 موقفاً (20 مغطى + 3 زوار)" />
+          <InfoRow label="مواقف القبو" value="7 مواقف (2.5 × 5.0 م) + مخزنان" />
+          <InfoRow label="مواقف المشروع" value="31 موقفاً (28 مغطى + 3 زوار)" />
           <Separator />
           <div className="rounded-lg bg-amber-50 border border-amber-200 p-3">
             <p className="font-bold text-amber-800 text-[13px] mb-1">السطح المجهّز</p>
@@ -148,7 +148,7 @@ export function SitePlan() {
                     20 × 15 م — 300 م²
                   </PlanLabel>
                   <PlanLabel x={b.x + b.w / 2} y={b.y + b.d / 2 + 1.75} size={0.58} weight={600} fill={b.color}>
-                    12 شقة + مصعد
+                    9 شقق + مصعد
                   </PlanLabel>
                 </g>
               );
