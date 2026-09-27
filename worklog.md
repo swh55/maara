@@ -22,3 +22,22 @@ Stage Summary:
 - تطبيق تفاعلي كامل على المسار / يعرض: مخطط الموقع التفاعلي، المبنى طابقاً بطابق (قبو/أرضي/نموذجي/سطح)، الشقة النموذجية 100 م²، وميزان المساحات (60% بناء / 40% مفتوح).
 - التحقق المتصفحي نجح: العرض، التبويبات، النقر على المباني، الجداول، التجاوب على 390px و1440px، والتذييل الثابت — دون أي أخطاء كونسول.
 - ملفات جديدة: src/lib/arch-data.ts، src/components/arch/{primitives,site-plan,floor-plans,apartment-plan,building-explorer}.tsx؛ ملفات معدلة: src/app/{layout,page}.tsx، globals.css، next.config.ts.
+
+---
+Task ID: 2
+Agent: Z.ai Code (main)
+Task: رفع تحديثات المشروع إلى مستودع GitHub (swh55/maara) مع توقيع التعديلات ببريد softwarehouse55@gmail.com.
+
+Work Log:
+- فحص حالة git: 3 تعديلات سابقة موقّعة بهوية "Z User <z@container>" وبرسائل UUID عشوائية.
+- التحقق من المستودع البعيد git ls-remote: المستودع فارغ (يمكن الرفع دون تعارض).
+- فحص .env: يحتوي مسار قاعدة بيانات محلي فقط (لا أسرار)، وأُزيل من التتبع احتياطاً لأن .gitignore يستثنيه أصلاً.
+- إعادة كتابة التاريخ الكامل بـ git filter-branch: تعديل هوية المؤلف والمُودع إلى swh55 <softwarehouse55@gmail.com> مع استبدال رسائل UUID برسائل وصفية عربية.
+- إزالة refs/original الاحتياطية، ثم git rm --cached .env وتعديل تأمين أخير.
+- إضافة remote origin برمز الوصول ودفع فرع main مع تتبّع origin/main.
+- التحقق: git ls-remote يطابق HEAD المحلي (8eec5a9)، وGitHub API يؤكد المستودع swh55/maara (خاص) يحتوي الفرع main.
+
+Stage Summary:
+- المستودع https://github.com/swh55/maara يحتوي الآن 4 تعديلات كاملة موقّعة ببريد softwarehouse55@gmail.com.
+- 93 ملفاً مرفوعاً تشمل تطبيق التصميم المعماري التفاعلي كاملاً (مخطط الموقع، الطوابق، الشقة، ميزان المساحات).
+- .env محلي فقط ولا يُرفع؛ الهوية git المحلية مضبوطة على swh55 / softwarehouse55@gmail.com لأي تعديلات قادمة.
