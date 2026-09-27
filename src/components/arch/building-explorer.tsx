@@ -4,12 +4,11 @@ import { useState } from "react";
 import {
   ArrowUpDown,
   BedDouble,
-  Car,
   Droplets,
+  Fence,
   Flame,
   Layers,
   Sun,
-  Warehouse,
   Zap,
 } from "lucide-react";
 import { BasementPlan, GroundPlan, RoofPlan, TypicalPlan } from "./floor-plans";
@@ -22,11 +21,11 @@ type FloorTab = "roof" | "typical" | "ground" | "basement";
 
 const STACK = [
   { id: "roof", label: "السطح", sub: "منظومة شمسية + خزانات", color: "bg-amber-500", tab: "roof" as FloorTab, icon: Sun },
-  { id: "f3", label: "الطابق الثالث السكني", sub: "3 شقق — 300 م²", color: "bg-emerald-600", tab: "typical" as FloorTab, icon: BedDouble },
-  { id: "f2", label: "الطابق الثاني السكني", sub: "3 شقق — 300 م²", color: "bg-emerald-600", tab: "typical" as FloorTab, icon: BedDouble },
-  { id: "f1", label: "الطابق الأول السكني", sub: "3 شقق — 300 م²", color: "bg-emerald-600", tab: "typical" as FloorTab, icon: BedDouble },
-  { id: "ground", label: "الطابق الأرضي", sub: "بهو المدخل + خدمات", color: "bg-stone-500", tab: "ground" as FloorTab, icon: DoorIcon },
-  { id: "basement", label: "القبو", sub: "مواقف + مخازن + معدات", color: "bg-zinc-600", tab: "basement" as FloorTab, icon: Car },
+  { id: "f3", label: "الطابق الثالث السكني — متكرر", sub: "3 شقق — 300 م²", color: "bg-emerald-600", tab: "typical" as FloorTab, icon: BedDouble },
+  { id: "f2", label: "الطابق الثاني السكني — متكرر", sub: "3 شقق — 300 م²", color: "bg-emerald-600", tab: "typical" as FloorTab, icon: BedDouble },
+  { id: "f1", label: "الطابق الأول السكني — متكرر", sub: "3 شقق — 300 م²", color: "bg-emerald-600", tab: "typical" as FloorTab, icon: BedDouble },
+  { id: "ground", label: "الطابق الأرضي السكني", sub: "3 شقق + بهو المدخل", color: "bg-teal-600", tab: "ground" as FloorTab, icon: DoorIcon },
+  { id: "basement", label: "القبو السكني", sub: "3 شقق + مناور ضوء", color: "bg-cyan-700", tab: "basement" as FloorTab, icon: Fence },
 ];
 
 function DoorIcon(props: React.ComponentProps<"svg">) {
@@ -92,59 +91,59 @@ export function BuildingExplorer() {
 
       <Tabs value={tab} onValueChange={(v) => setTab(v as FloorTab)} className="w-full">
         <TabsList className="grid w-full grid-cols-4 h-auto bg-stone-100 p-1 rounded-xl">
-          <TabsTrigger value="basement" className="py-2 rounded-lg data-[state=active]:bg-white data-[state=active]:text-emerald-800 data-[state=active]:font-bold">
-            القبو
+          <TabsTrigger value="basement" className="py-2 rounded-lg data-[state=active]:bg-white data-[state=active]:text-cyan-800 data-[state=active]:font-bold">
+            القبو السكني
           </TabsTrigger>
-          <TabsTrigger value="ground" className="py-2 rounded-lg data-[state=active]:bg-white data-[state=active]:text-emerald-800 data-[state=active]:font-bold">
-            الأرضي
+          <TabsTrigger value="ground" className="py-2 rounded-lg data-[state=active]:bg-white data-[state=active]:text-teal-800 data-[state=active]:font-bold">
+            الأرضي السكني
           </TabsTrigger>
           <TabsTrigger value="typical" className="py-2 rounded-lg data-[state=active]:bg-white data-[state=active]:text-emerald-800 data-[state=active]:font-bold">
-            طابق سكني نموذجي
+            طابق سكني متكرر
           </TabsTrigger>
           <TabsTrigger value="roof" className="py-2 rounded-lg data-[state=active]:bg-white data-[state=active]:text-amber-700 data-[state=active]:font-bold">
             السطح الشمسي
           </TabsTrigger>
         </TabsList>
 
-        {/* ===== القبو ===== */}
+        {/* ===== القبو السكني ===== */}
         <TabsContent value="basement" className="mt-4">
           <FloorLayout
-            badge={{ text: "300 م²", className: "bg-zinc-700" }}
-            title="القبو — مواقف السيارات والمخازن"
+            badge={{ text: "300 م²", className: "bg-cyan-700" }}
+            title="القبو السكني — ثلاث شقق مثل الطابق المتكرر تماماً"
             features={[
-              { icon: Car, text: "7 مواقف قياسية (2.5 × 5.0 م) ناتجة عن التخطيط الفعلي — 28 موقفاً مغطى للمشروع + 3 مواقف زوار" },
-              { icon: ArrowUpDown, text: "ممر غربي مزدوج التحميل (3.7 م) يخدم 6 مواقف + ممر شرقي يصل المنحدر وحركة باتجاه واحد حول اللب (مبدئية)" },
-              { icon: Warehouse, text: "مخزنان + خزان مياه أرضي 20 م³ وغرفة مضخات" },
-              { icon: Zap, text: "غرفة كهرباء ومولّد احتياطي، مع وصول مباشر للدرج والمصعد عبر اللب المركزي" },
+              { icon: BedDouble, text: "3 شقق مطابقة حرفياً للطابق المتكرر: شقتان شماليتان 81.34 م² + جنوبية كبرى 118.00 م² + لب 19.32 م² — 15 شقة في المبنى الواحد" },
+              { icon: Sun, text: "حلقة مناور ضوء بعمق 1.40 م محفورة خارج البصمة على الجوانب الأربعة (≈ 105.8 م²) — إضاءة طبيعية لكل غرف النوم والمعيشة والفناءات" },
+              { icon: Fence, text: "فناءات منخفضة بدرابزين داخل زوايا المناور بدل الشرفات الكابولية — فناء خاص لكل شقة يفتح من الغرفة نفسها" },
+              { icon: Zap, text: "حفرة فنية تحت اللب (خزان أرضي 20 م³ + مضخات + كهرباء) + عزل مائي وتصريف محيطي وتهوية ميكانيكية عبر رافعات اللب — أُلغيت المواقف المغطاة بقرار المالك" },
             ]}
             plan={<BasementPlan />}
           />
         </TabsContent>
 
-        {/* ===== الأرضي ===== */}
+        {/* ===== الأرضي السكني ===== */}
         <TabsContent value="ground" className="mt-4">
           <FloorLayout
-            badge={{ text: "300 م²", className: "bg-stone-600" }}
-            title="الطابق الأرضي — المدخل والخدمات المشتركة"
+            badge={{ text: "300 م²", className: "bg-teal-600" }}
+            title="الطابق الأرضي السكني — ثلاث شقق + بهو المدخل"
             features={[
-              { icon: DoorIcon, text: "بهو مدخل رئيسي بصناديق بريد ومقاعد انتظار" },
-              { icon: ArrowUpDown, text: "لب حركي: مصعد (8 أشخاص) + درج متفلتين + بهو توزيع يخدم الشقق الثلاث في الطوابق السكنية" },
-              { icon: BedDouble, text: "صالة متعددة الأغراض 31 م² + حضانة أطفال" },
-              { icon: Zap, text: "إدارة واستقبال وأمن وعدادات وغرفة نفايات بباب خدمة خارجي" },
+              { icon: BedDouble, text: "3 شقق مطابقة حرفياً للطابق المتكرر — أُلغيت بهو الخدمات والحضانة والإدارة بقرار المالك لتوحيد الطوابق الخمسة سكنياً" },
+              { icon: DoorIcon, text: "باب المدخل الرئيسي على الواجهة المطلة على محور المشاة المركزي + مظلة كابولية — يفتح مباشرة في بهو توزيع الشقة الجنوبية الذي يمتد حتى الواجهة الشرقية" },
+              { icon: ArrowUpDown, text: "بهو المدخل يصل إلى باب اللب الجنوبي: درج + مصعد يخدم الطوابق الخمسة من القبو السكني حتى الثالث" },
+              { icon: Layers, text: "معادلة الطابق نفسها في الطوابق الخمسة: 2 × 81.34 + 118.00 + 19.32 = 300 م² — الشقتان الشماليتان تدخلان من اللب كما في الطوابق العليا" },
             ]}
             plan={<GroundPlan />}
           />
         </TabsContent>
 
-        {/* ===== الطابق النموذجي ===== */}
+        {/* ===== الطابق المتكرر ===== */}
         <TabsContent value="typical" className="mt-4">
           <FloorLayout
             badge={{ text: "300 م²", className: "bg-emerald-700" }}
-            title="الطابق السكني النموذجي — ثلاث شقق فقط حول اللب الحركي"
+            title="الطابق السكني المتكرر — ثلاث شقق فقط حول اللب الحركي"
             features={[
               { icon: BedDouble, text: "شقتان شماليتان × 81.34 م² (بمرايا) + شقة جنوبية كبرى 118.00 م² — كل شقة 5 غرف رئيسية + مطبخ + حمّامان + بهو، وحمّام ثانوي 1.00 م² بالضبط" },
-              { icon: Sun, text: "3 شرفات ركنية في الطابق عند زوايا المبنى — من المعيشة في الجنوبية ومن النوم الرئيسية في الشماليتين (36 شرفة في المشروع)" },
-              { icon: Layers, text: "معادلة الطابق: 2 × 81.34 + 118.00 + 19.32 = 300 م² — المتوسط الصافي للشقة ≈ 81 م² مقابل 59.54 م² في تصميم الشقق الأربع" },
+              { icon: Sun, text: "3 شرفات ركنية في كل طابق من الطوابق الخمسة عند زوايا المبنى — 15 شرفة في المبنى الواحد (60 شرفة في المشروع)" },
+              { icon: Layers, text: "معادلة الطابق تتكرر حرفياً في الطوابق الخمسة: 2 × 81.34 + 118.00 + 19.32 = 300 م² — 3 × 5 × 4 = 60 شقة في المشروع" },
               { icon: ArrowUpDown, text: "لب حركي 19.32 م²: بهو توزيع يفتح مباشرة على الشقق الثلاث + درج بمتفلتين محمي + مصعد 8 أشخاص + رافعة صحية" },
             ]}
             plan={<TypicalPlan />}

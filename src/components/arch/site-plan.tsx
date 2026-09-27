@@ -41,13 +41,13 @@ export function SitePlan() {
         <CardContent className="space-y-3 text-sm">
           <InfoRow label="الأبعاد" value="20.00 م × 15.00 م" />
           <InfoRow label="التوجيه الشمسي" value="الواجهات الطويلة شمال – جنوب" />
-          <InfoRow label="عدد الطوابق" value="قبو + أرضي + 3 سكنية + سطح" />
-          <InfoRow label="الشقق في المبنى" value="9 شقق (3 شقق × 3 طوابق)" />
-          <InfoRow label="الشرفات" value="9 شرفات ركنية (3 × 3 طوابق)" />
-          <InfoRow label="الغرف إجمالاً" value="45 غرفة رئيسية + 18 حمّاماً + 9 بهو" />
-          <InfoRow label="الرافعة (مصعد)" value="مصعد واحد — 8 أشخاص" />
-          <InfoRow label="مواقف القبو" value="7 مواقف (2.5 × 5.0 م) + مخزنان" />
-          <InfoRow label="مواقف المشروع" value="31 موقفاً (28 مغطى + 3 زوار)" />
+          <InfoRow label="عدد الطوابق" value="5 طوابق سكنية متطابقة + سطح تقني" />
+          <InfoRow label="الشقق في المبنى" value="15 شقة (3 شقق × 5 طوابق)" />
+          <InfoRow label="الشرفات" value="15 شرفة ركنية (3 × 5 طوابق)" />
+          <InfoRow label="الغرف إجمالاً" value="75 غرفة رئيسية + 30 حمّاماً" />
+          <InfoRow label="الرافعة (مصعد)" value="مصعد واحد — 8 أشخاص — يخدم القبو السكني" />
+          <InfoRow label="القبو" value="سكني — مناور ضوء 1.4 م + حفرة فنية تحت اللب" />
+          <InfoRow label="مواقف المشروع" value="≈ 23 موقفاً سطحياً على حلقة الخدمة (مبدئي)" />
           <Separator />
           <div className="rounded-lg bg-amber-50 border border-amber-200 p-3">
             <p className="font-bold text-amber-800 text-[13px] mb-1">السطح المجهّز</p>
@@ -86,6 +86,22 @@ export function SitePlan() {
 
             {/* المنطقة الداخلية الخضراء */}
             <rect x={3} y={3} width={44} height={34} fill="#dcfce7" />
+
+            {/* مناور ضوء القبو السكني — حلقة محفورة خارج بصمة كل مبنى */}
+            {BUILDINGS.map((b) => (
+              <rect
+                key={`well-${b.id}`}
+                x={b.x - 1.4}
+                y={b.y - 1.4}
+                width={b.w + 2.8}
+                height={b.d + 2.8}
+                fill="#e0f2fe"
+                opacity={0.65}
+                stroke="#0284c7"
+                strokeWidth={0.09}
+                strokeDasharray="0.5 0.32"
+              />
+            ))}
 
             {/* ممرات الصليب المرصوفة */}
             <rect x={24} y={3} width={2} height={34} fill="#e7e5e4" />
@@ -148,7 +164,7 @@ export function SitePlan() {
                     20 × 15 م — 300 م²
                   </PlanLabel>
                   <PlanLabel x={b.x + b.w / 2} y={b.y + b.d / 2 + 1.75} size={0.58} weight={600} fill={b.color}>
-                    9 شقق + مصعد
+                    15 شقة + مصعد
                   </PlanLabel>
                 </g>
               );
@@ -164,7 +180,7 @@ export function SitePlan() {
               <Tree key={i} x={tx} y={ty} r={0.42} />
             ))}
 
-            {/* مواقف الزوار — طريق الحلقة الجنوبي */}
+            {/* مواقف سطحية على طريق الحلقة الجنوبي (زوار + سكان — مبدئي) */}
             {[5.4, 10.4, 15.4].map((px) => (
               <g key={px}>
                 <rect
@@ -183,7 +199,7 @@ export function SitePlan() {
               </g>
             ))}
             <PlanLabel x={12.7} y={36.7} size={0.62} weight={700} fill="#57534e">
-              مواقف الزوار
+              مواقف سطحية (زوار + سكان — مبدئي ≈ 23 على الحلقة)
             </PlanLabel>
 
             {/* حدود الأرض */}
@@ -233,13 +249,16 @@ export function SitePlan() {
         {/* مفتاح المخطط */}
         <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-stone-600">
           <LegendChip color="#e7e5e4" border>
-            مبنى سكني (بصمة 300 م²)
+            مبنى سكني (بصمة 300 م² — 5 طوابق × 3 شقق)
+          </LegendChip>
+          <LegendChip color="#e0f2fe" border>
+            مناور ضوء القبو السكني (خارج البصمة)
           </LegendChip>
           <LegendChip color="#d6d3d1">حلقة طريق الخدمة — 504 م²</LegendChip>
           <LegendChip color="#dcfce7">ممرات وحدائق — 296 م²</LegendChip>
           <LegendChip color="#99f6e4">نافورة الساحة المركزية</LegendChip>
           <LegendChip color="#ffffff" border>
-            مواقف الزوار
+            مواقف سطحية (زوار + سكان)
           </LegendChip>
           <LegendChip color="#4ade80">أشجار</LegendChip>
         </div>

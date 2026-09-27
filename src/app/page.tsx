@@ -138,7 +138,7 @@ export default function Home() {
             <div className="flex flex-wrap items-center gap-2 mb-6">
               <Badge className="bg-emerald-600 hover:bg-emerald-600">مخطط معماري أولي</Badge>
               <Badge variant="outline" className="border-emerald-500/40 text-emerald-300">
-                4 مبانٍ — 5 طوابق — 3 شقق في كل طابق سكني
+                4 مبانٍ — 5 طوابق سكنية متطابقة — 3 شقق في كل طابق
               </Badge>
               <Badge variant="outline" className="border-emerald-500/40 text-emerald-300">
                 تصميم مبدئي Conceptual / Preliminary
@@ -150,9 +150,10 @@ export default function Home() {
             </h1>
             <p className="mt-5 text-base sm:text-lg text-stone-300 leading-8 max-w-3xl">
               أربعة مبانٍ سكنية تشغل 60% من مساحة الأرض (1200 م²)، ويخصص الباقي لطريق خدمة
-              دائري وحدائق ومداخل. كل مبنى يتكون من قبو وأرضي وثلاثة طوابق سكنية وسطح مجهّز
-              بمصفوفة شمسية جنوبية (48 لوحاً) و16 خزان مياه، مع مصعد في كل مبنى
-              و<strong className="text-white">36 شقة (3 شقق فقط في كل طابق)</strong> بمتوسط صافي{" "}
+              دائري وحدائق ومداخل. كل مبنى يتكون من خمسة طوابق سكنية متطابقة حرفياً — قبو سكني
+              بمناور ضوء، أرضي سكني بمدخل شرقي، وثلاثة طوابق متكررة — وسطح مجهّز بمصفوفة
+              شمسية جنوبية (48 لوحاً) و16 خزان مياه، مع مصعد في كل مبنى{" "}
+              و<strong className="text-white">60 شقة (3 شقق فقط في كل طابق من الطوابق الخمسة)</strong> بمتوسط صافي{" "}
               <strong className="text-white">{AVERAGE_NET.toFixed(2)} م²</strong> — كل شقة تحتوي خمس غرف
               رئيسية (صالة + 4 غرف نوم) ومطبخاً وحمّامين (الثانوي 1.00 م² بالضبط) وبهو مدخل
               وشرفة ركنية خاصة — مع معالجة معمارية لإضاءة الشقق الشمالية بواجهتين.
@@ -178,7 +179,7 @@ export default function Home() {
             <dl className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-3 max-w-4xl">
               {[
                 { k: "بصمة البناء", v: "60% — 1200 م²" },
-                { k: "الشقق + الشرفات", v: "36 شقة + 36 شرفة" },
+                { k: "الشقق + الشرفات", v: "60 شقة + 60 شرفة" },
                 { k: "الطاقة الشمسية", v: "192 لوحاً — 86.4 ك.و" },
                 { k: "خزانات المياه", v: "64 خزاناً — 64 م³" },
               ].map((s) => (
@@ -196,7 +197,7 @@ export default function Home() {
           <SectionHeader
             icon={<Layers className="size-5" />}
             title="أرقام المشروع"
-            subtitle="حصيلة إعادة التصميم بثلاث شقق في الطابق: 4 مبانٍ × 3 طوابق × 3 شقق = 36 شقة أوسع وأكثر راحة"
+            subtitle="حصيلة توحيد الطوابق بقرار المالك: 4 مبانٍ × 5 طوابق سكنية متطابقة × 3 شقق = 60 شقة بنفس جودة الطابق المتكرر"
           />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {PROJECT_STATS.map((s) => {
@@ -235,7 +236,7 @@ export default function Home() {
           <SectionHeader
             icon={<Building2 className="size-5" />}
             title="المبنى السكني طابقاً بطابق"
-            subtitle="قبو بسبعة مواقف، أرضي للمدخل، ثلاثة طوابق سكنية بثلاث شقق فقط وثلاث شرفات ركنية، وسطح بمصفوفة جنوبية 16×3 وخزانات مركزية فوق اللب"
+            subtitle="خمسة طوابق سكنية متطابقة حرفياً: قبو سكني بمناور ضوء وفناءات، أرضي سكني بمدخل شرقي، وثلاثة طوابق متكررة — 3 شقق و3 شرفات في كل طابق — وسطح بمصفوفة جنوبية 16×3 وخزانات مركزية فوق اللب"
           />
           <BuildingExplorer />
         </section>
@@ -279,7 +280,7 @@ export default function Home() {
                     <li>• شقة جنوبية واحدة كاملة العرض: 5 غرف رئيسية على الجنوب + نوم رابعة ركنية شرقية</li>
                     <li>• شقتان شماليتان: صالة على الواجهة الجانبية + نوم رئيسية على الزاوية + 3 نوم شمالية</li>
                     <li>• 3 شرفات زاوية — لكل شقة شرفتها الخاصة</li>
-                    <li>• 24 شقة شمالية في المشروع تحصل على واجهة ثانية كاملة (غربية/شرقية) للفراغ النهاري</li>
+                    <li>• 40 شقة شمالية في المشروع تحصل على واجهة ثانية كاملة (غربية/شرقية) للفراغ النهاري</li>
                   </ul>
                 </div>
                 <p className="text-[13px] leading-6 text-stone-500 bg-amber-50 border border-amber-200 rounded-xl p-4">
@@ -340,9 +341,9 @@ export default function Home() {
                 </div>
                 <p className="text-[13px] leading-6 text-stone-500 bg-stone-50 border border-stone-200 rounded-xl p-3.5">
                   يتكرر هذا التوزيع <strong className="text-stone-700">3 مرات في كل طابق</strong> (شقتان شماليتان
-                  بالمرايا + شقة جنوبية) × 3 طوابق سكنية × 4 مبانٍ ={" "}
-                  <strong className="text-emerald-700">36 شقة</strong> بإجمالي 180 غرفة رئيسية و72 حمّاماً
-                  (منها 36 حمّاماً ثانوياً بمساحة 1.00 م² لكل منها) و36 شرفة ركنية (3 × 3 × 4) في المشروع كاملاً.
+                  بالمرايا + شقة جنوبية) × 5 طوابق سكنية متطابقة × 4 مبانٍ ={" "}
+                  <strong className="text-emerald-700">60 شقة</strong> بإجمالي 300 غرفة رئيسية و120 حمّاماً
+                  (منها 60 حمّاماً ثانوياً بمساحة 1.00 م² لكل منها) و60 شرفة ركنية (3 × 5 × 4) في المشروع كاملاً.
                 </p>
               </div>
             </div>
@@ -567,7 +568,7 @@ export default function Home() {
             </span>
             <div>
               <p className="font-bold text-white text-sm">المجمع السكني الأخضر — مخطط معماري أولي</p>
-              <p className="text-xs mt-0.5">قطعة 50 × 40 م | 4 مبانٍ | 36 شقة (3 في كل طابق) + 36 شرفة ركنية | مستوى تصميم تخطيطي قابل للتطوير التنفيذي</p>
+              <p className="text-xs mt-0.5">قطعة 50 × 40 م | 4 مبانٍ | 60 شقة (3 في كل طابق × 5 طوابق سكنية) + 60 شرفة ركنية | مستوى تصميم تخطيطي قابل للتطوير التنفيذي</p>
             </div>
           </div>
           <p className="text-xs text-stone-500 text-center sm:text-left">
