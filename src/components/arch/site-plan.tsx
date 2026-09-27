@@ -41,19 +41,20 @@ export function SitePlan() {
         <CardContent className="space-y-3 text-sm">
           <InfoRow label="الأبعاد" value="20.00 م × 15.00 م" />
           <InfoRow label="التوجيه الشمسي" value="الواجهات الطويلة شمال – جنوب" />
-          <InfoRow label="عدد الطوابق" value="5 طوابق سكنية متطابقة + سطح تقني" />
-          <InfoRow label="الشقق في المبنى" value="15 شقة (3 شقق × 5 طوابق)" />
-          <InfoRow label="الشرفات" value="15 شرفة ركنية (3 × 5 طوابق)" />
-          <InfoRow label="الغرف إجمالاً" value="75 غرفة رئيسية + 30 حمّاماً" />
-          <InfoRow label="الرافعة (مصعد)" value="مصعد واحد — 8 أشخاص — يخدم القبو السكني" />
-          <InfoRow label="القبو" value="سكني — مناور ضوء 1.4 م + حفرة فنية تحت اللب" />
-          <InfoRow label="مواقف المشروع" value="≈ 23 موقفاً سطحياً على حلقة الخدمة (مبدئي)" />
+          <InfoRow label="عدد الطوابق" value="قبو مواقف + أرضي خدمات + 3 طوابق سكنية + سطح" />
+          <InfoRow label="الشقق في المبنى" value="9 شقق (3 شقق × 3 طوابق سكنية)" />
+          <InfoRow label="الشرفات" value="9 شرفات من المعيشة (3 × 3 طوابق)" />
+          <InfoRow label="الغرف إجمالاً" value="45 غرفة رئيسية + 18 حمّاماً" />
+          <InfoRow label="الرافعة (مصعد)" value="مصعد واحد — 8 أشخاص — يخدم القبو حتى السطح" />
+          <InfoRow label="المدخل" value={activeBuilding.mirrored ? "غربي — على محور المشاة (بالمرايا)" : "شرقي — على محور المشاة"} />
+          <InfoRow label="القبو" value="6 مواقف 2.50 × 5.00 + مخزنان + حفرة فنية تحت اللب" />
+          <InfoRow label="مواقف المشروع" value="28 موقفاً (24 مغطى + 4 زوار سطحية)" />
           <Separator />
           <div className="rounded-lg bg-amber-50 border border-amber-200 p-3">
             <p className="font-bold text-amber-800 text-[13px] mb-1">السطح المجهّز</p>
             <p className="text-[13px] leading-6 text-amber-900/80">
               48 لوحاً شمسياً (16 صف × 3 — ≈ 21.6 ك.و) في مصفوفة جنوبية متصلة + 16 خزاناً × 1000 لتر
-              (16 م³) على قواعد 1×1 م حول اللب + سخّانان شمسيان + ممشى صيانة ودش برق.
+              (16 م³) على قواعد 1×1 م حول البنتهاوس فوق اللب + سخّانان شمسيان + ممشى صيانة ودش برق.
             </p>
           </div>
           <p className="text-xs text-stone-400">مرّر المؤشر فوق المباني في المخطط أو انقر عليها لاستعراض التفاصيل.</p>
@@ -67,7 +68,7 @@ export function SitePlan() {
             viewBox="-4.5 -5 59 51"
             className="w-full h-auto"
             role="img"
-            aria-label="مخطط الموقع العام: أربعة مبانٍ على أرض 50 × 40 متر"
+            aria-label="مخطط الموقع العام: أربعة مبانٍ على أرض 50 × 40 متر بمداخل موحدة على محور المشاة"
           >
             {/* الأرض */}
             <rect x={0} y={0} width={50} height={40} fill="#d6d3d1" />
@@ -87,22 +88,6 @@ export function SitePlan() {
             {/* المنطقة الداخلية الخضراء */}
             <rect x={3} y={3} width={44} height={34} fill="#dcfce7" />
 
-            {/* مناور ضوء القبو السكني — حلقة محفورة خارج بصمة كل مبنى */}
-            {BUILDINGS.map((b) => (
-              <rect
-                key={`well-${b.id}`}
-                x={b.x - 1.4}
-                y={b.y - 1.4}
-                width={b.w + 2.8}
-                height={b.d + 2.8}
-                fill="#e0f2fe"
-                opacity={0.65}
-                stroke="#0284c7"
-                strokeWidth={0.09}
-                strokeDasharray="0.5 0.32"
-              />
-            ))}
-
             {/* ممرات الصليب المرصوفة */}
             <rect x={24} y={3} width={2} height={34} fill="#e7e5e4" />
             <rect x={3} y={19} width={44} height={2} fill="#e7e5e4" />
@@ -114,6 +99,7 @@ export function SitePlan() {
             {/* المباني */}
             {BUILDINGS.map((b) => {
               const isActive = active === b.id;
+              const entranceEast = !b.mirrored; // المباني الغربية بمدخل شرقي، والشرقية بالمرايا
               return (
                 <g
                   key={b.id}
@@ -148,15 +134,20 @@ export function SitePlan() {
                     stroke={isActive ? "#059669" : "#a8a29e"}
                     strokeWidth={0.08}
                   />
-                  {/* مدخل المبنى (جهة الممر) */}
-                  <rect
-                    x={b.x + 9.2}
-                    y={b.y + b.d - 0.22}
-                    width={1.6}
-                    height={0.44}
-                    fill={isActive ? "#a7f3d0" : "#e7e5e4"}
-                  />
-                  <Door x={b.x + 9.2} y={b.y + b.d} r={0.8} rot={-90} />
+                  {/* مدخل المبنى على الواجهة المطلة على محور المشاة + مظلة */}
+                  {entranceEast ? (
+                    <>
+                      <rect x={b.x + b.w - 0.22} y={b.y + 9.28} width={0.44} height={1.12} fill={isActive ? "#a7f3d0" : "#e7e5e4"} />
+                      <Door x={b.x + b.w} y={b.y + 10.4} r={0.9} rot={180} />
+                      <rect x={b.x + b.w} y={b.y + 9.15} width={1.0} height={1.4} fill="#fef3c7" stroke="#d97706" strokeWidth={0.06} strokeDasharray="0.25 0.16" />
+                    </>
+                  ) : (
+                    <>
+                      <rect x={b.x - 0.22} y={b.y + 9.28} width={0.44} height={1.12} fill={isActive ? "#a7f3d0" : "#e7e5e4"} />
+                      <Door x={b.x} y={b.y + 9.4} r={0.9} rot={0} />
+                      <rect x={b.x - 1.0} y={b.y + 9.15} width={1.0} height={1.4} fill="#fef3c7" stroke="#d97706" strokeWidth={0.06} strokeDasharray="0.25 0.16" />
+                    </>
+                  )}
                   <PlanLabel x={b.x + b.w / 2} y={b.y + b.d / 2 - 0.4} size={1.15} weight={800} fill="#1c1917">
                     {b.name}
                   </PlanLabel>
@@ -164,7 +155,7 @@ export function SitePlan() {
                     20 × 15 م — 300 م²
                   </PlanLabel>
                   <PlanLabel x={b.x + b.w / 2} y={b.y + b.d / 2 + 1.75} size={0.58} weight={600} fill={b.color}>
-                    15 شقة + مصعد
+                    9 شقق + مصعد
                   </PlanLabel>
                 </g>
               );
@@ -180,8 +171,8 @@ export function SitePlan() {
               <Tree key={i} x={tx} y={ty} r={0.42} />
             ))}
 
-            {/* مواقف سطحية على طريق الحلقة الجنوبي (زوار + سكان — مبدئي) */}
-            {[5.4, 10.4, 15.4].map((px) => (
+            {/* مواقف زوار سطحية على طريق الحلقة الجنوبي */}
+            {[5.4, 10.4, 15.4, 20.4].map((px) => (
               <g key={px}>
                 <rect
                   x={px}
@@ -199,7 +190,7 @@ export function SitePlan() {
               </g>
             ))}
             <PlanLabel x={12.7} y={36.7} size={0.62} weight={700} fill="#57534e">
-              مواقف سطحية (زوار + سكان — مبدئي ≈ 23 على الحلقة)
+              مواقف زوار سطحية (4 مواقف — سكان المشروع في مواقف الأقبية المغطاة)
             </PlanLabel>
 
             {/* حدود الأرض */}
@@ -249,16 +240,16 @@ export function SitePlan() {
         {/* مفتاح المخطط */}
         <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-stone-600">
           <LegendChip color="#e7e5e4" border>
-            مبنى سكني (بصمة 300 م² — 5 طوابق × 3 شقق)
+            مبنى سكني (بصمة 300 م² — قبو + أرضي + 3 طوابق سكنية × 3 شقق)
           </LegendChip>
-          <LegendChip color="#e0f2fe" border>
-            مناور ضوء القبو السكني (خارج البصمة)
+          <LegendChip color="#fef3c7" border>
+            مدخل ومظلة (على محور المشاة — متطابق بالمرايا)
           </LegendChip>
           <LegendChip color="#d6d3d1">حلقة طريق الخدمة — 504 م²</LegendChip>
           <LegendChip color="#dcfce7">ممرات وحدائق — 296 م²</LegendChip>
           <LegendChip color="#99f6e4">نافورة الساحة المركزية</LegendChip>
           <LegendChip color="#ffffff" border>
-            مواقف سطحية (زوار + سكان)
+            مواقف زوار سطحية
           </LegendChip>
           <LegendChip color="#4ade80">أشجار</LegendChip>
         </div>
