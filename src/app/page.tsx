@@ -5,9 +5,11 @@ import {
   BedDouble,
   Building2,
   Car,
+  CheckCircle2,
   Compass,
   DoorOpen,
   Droplets,
+  Fence,
   Flame,
   Layers,
   Map,
@@ -19,6 +21,7 @@ import {
   Trees,
   Volume2,
   Wind,
+  XCircle,
   Zap,
 } from "lucide-react";
 import { SitePlan } from "@/components/arch/site-plan";
@@ -28,12 +31,17 @@ import {
   APARTMENT_GROSS,
   APARTMENT_NOTES,
   APARTMENT_NET,
+  AUDIT,
   BUA_TABLE,
+  BALCONY,
   BUILDING_FOOTPRINT,
   CALC_CHECK,
   DESIGN_STANDARDS,
   PROJECT_STATS,
+  ROOF_TOTALS,
   SITE,
+  SOLAR_STUDY,
+  WATER_TANKS,
 } from "@/lib/arch-data";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -55,6 +63,8 @@ const STAT_ICONS: Record<string, React.ComponentType<{ className?: string }>> = 
   car: Car,
   sun: Sun,
   tree: Trees,
+  balcony: Fence,
+  droplets: Droplets,
 };
 
 const STANDARD_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -71,6 +81,7 @@ const STANDARD_ICONS: Record<string, React.ComponentType<{ className?: string }>
 const NAV = [
   { href: "#site", label: "مخطط الموقع" },
   { href: "#building", label: "المبنى طابقاً بطابق" },
+  { href: "#solar", label: "دراسة الشمس" },
   { href: "#apartment", label: "الشقة النموذجية" },
   { href: "#standards", label: "معايير التصميم" },
   { href: "#numbers", label: "ميزان المساحات" },
@@ -134,8 +145,9 @@ export default function Home() {
             <p className="mt-5 text-base sm:text-lg text-stone-300 leading-8 max-w-3xl">
               أربعة مبانٍ سكنية تشغل 60% من مساحة الأرض (1200 م²)، ويخصص الباقي لطريق خدمة
               دائري وحدائق ومداخل. كل مبنى يتكون من قبو وأرضي وثلاثة طوابق سكنية وسطح مجهّز
-              بمنظومة طاقة شمسية وخزانات مياه، مع مصعد في كل مبنى و48 شقة (68.70 م²) يحتوي
-              كل منها على خمس غرف رئيسية (صالة + 4 غرف نوم) ومطبخ منفصل وحمّامين وبهو مدخل.
+              بمصفوفة شمسية جنوبية (48 لوحاً) و16 خزان مياه، مع مصعد في كل مبنى و48 شقة (68.70 م²)
+              يحتوي كل منها على خمس غرف رئيسية (صالة + 4 غرف نوم) ومطبخ منفصل وحمّامين وبهو مدخل
+              وشرفة ركنية خاصة — مع معالجة معمارية لإضاءة الشقق الشمالية.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
@@ -158,9 +170,9 @@ export default function Home() {
             <dl className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-3 max-w-4xl">
               {[
                 { k: "بصمة البناء", v: "60% — 1200 م²" },
-                { k: "الشقق", v: "48 × 68.70 م²" },
-                { k: "المساحة المبنية", v: "6,000 م²" },
-                { k: "الطاقة الشمسية", v: "72 ك.و ذروة" },
+                { k: "الشقق + الشرفات", v: "48 شقة + 48 شرفة" },
+                { k: "الطاقة الشمسية", v: "192 لوحاً — 86.4 ك.و" },
+                { k: "خزانات المياه", v: "64 خزاناً — 64 م³" },
               ].map((s) => (
                 <div key={s.k} className="rounded-xl bg-white/5 border border-white/10 px-4 py-4 backdrop-blur-sm">
                   <dt className="text-xs text-stone-400 font-semibold">{s.k}</dt>
@@ -215,9 +227,59 @@ export default function Home() {
           <SectionHeader
             icon={<Building2 className="size-5" />}
             title="المبنى السكني طابقاً بطابق"
-            subtitle="قبو للخدمات والمواقف، أرضي للمدخل، ثلاثة طوابق سكنية، وسطح مخصص للطاقة الشمسية والخزانات"
+            subtitle="قبو للخدمات والمواقف، أرضي للمدخل، ثلاثة طوابق سكنية بشرفات ركنية، وسطح بمصفوفة جنوبية 16×3 وخزانات مركزية"
           />
           <BuildingExplorer />
+        </section>
+
+        {/* ===== دراسة الشمس ===== */}
+        <section id="solar" className="bg-white border-y border-stone-200 scroll-mt-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+            <SectionHeader
+              icon={<Sun className="size-5" />}
+              title="دراسة أولية لتوجيه الشمس"
+              subtitle="الواجهة الجنوبية ذات الأولوية للإشعاع، ثم الشرق والغرب، مع معالجة معمارية حقيقية للشقق الشمالية — دراسة نوعية دون ادعاء محاكاة رقمية"
+            />
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {SOLAR_STUDY.priorities.map((p) => (
+                <div key={p.dir} className="rounded-2xl border border-stone-200 bg-stone-50/60 p-5">
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <span className="inline-block size-4 rounded-full" style={{ backgroundColor: p.color }} />
+                    <h4 className="font-extrabold text-stone-900">{p.dir}</h4>
+                  </div>
+                  <p className="text-xs font-bold mb-2" style={{ color: p.color }}>{p.level}</p>
+                  <p className="text-[13px] leading-6 text-stone-600">{p.d}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_360px] items-start">
+              <div className="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-5">
+                <h4 className="font-extrabold text-emerald-900 mb-3">كيف عولجت الشقق الشمالية معماريًا؟</h4>
+                <ul className="space-y-2.5">
+                  {SOLAR_STUDY.northStrategy.map((s, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-sm text-stone-700 leading-7">
+                      <CheckCircle2 className="size-4 text-emerald-700 shrink-0 mt-1.5" />
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="space-y-3">
+                <div className="rounded-2xl border border-stone-200 bg-white p-5">
+                  <p className="font-extrabold text-stone-800 text-sm mb-2">حصيلة التوزيع في كل طابق</p>
+                  <ul className="text-[13px] leading-6 text-stone-600 space-y-1.5">
+                    <li>• شقتان ركنيتان جنوبيتان: 3 غرف نوم + صالة ركنية على الجنوب</li>
+                    <li>• شقتان ركنيتان شماليتان: صالة ركنية + نوم رئيسية جانبية + 3 نوم شمالية</li>
+                    <li>• 4 شرفات زاوية — كلها بتعرض غربي أو شرقي</li>
+                    <li>• 48 غرفة نوم رئيسية على الواجهات الجانبية في المشروع (4 في كل طابق)</li>
+                  </ul>
+                </div>
+                <p className="text-[13px] leading-6 text-stone-500 bg-amber-50 border border-amber-200 rounded-xl p-4">
+                  <strong className="text-amber-800">حدود الدراسة:</strong> {SOLAR_STUDY.method}
+                </p>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* ===== الشقة النموذجية ===== */}
@@ -225,8 +287,8 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
             <SectionHeader
               icon={<BedDouble className="size-5" />}
-              title="الشقة النموذجية — 68.70 م²"
-              subtitle={`خمس غرف رئيسية (صالة معيشة وطعام + 4 غرف نوم) مع مطبخ منفصل وحمّام رئيسي وحمّام ثانوي 1.00 م² بالضبط وبهو مدخل وممر توزيع — صافي الفراغات ${APARTMENT_NET.toFixed(2)} م²، وتتكرر أربع مرات في كل طابق سكني`}
+              title="الشقة النموذجية — 68.70 م² + شرفة ركنية"
+              subtitle={`خمس غرف رئيسية (صالة ركنية + 4 غرف نوم) مع مطبخ منفصل وحمّام رئيسي وحمّام ثانوي 1.00 م² بالضبط وبهو مدخل وممر توزيع — صافي الفراغات ${APARTMENT_NET.toFixed(2)} م² وشرفة كابولية 6.63 م²، وتتكرر أربع مرات في كل طابق سكني`}
             />
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] items-start">
               <div className="min-w-0 rounded-2xl border border-stone-200 bg-stone-50/60 p-3 sm:p-5 plan-shadow">
@@ -234,7 +296,7 @@ export default function Home() {
               </div>
               <div className="min-w-0 space-y-4">
                 <div className="flex flex-wrap gap-2">
-                  {["5 غرف رئيسية", "مطبخ منفصل", "حمّام رئيسي 2.27 م²", "حمّام ثانوي 1.00 م²", "بهو مدخل + ممر"].map((c) => (
+                  {["5 غرف رئيسية", "مطبخ منفصل", "حمّام رئيسي 2.27 م²", "حمّام ثانوي 1.00 م²", "شرفة ركنية 6.63 م²", "صالة ركنية بواجهتين"].map((c) => (
                     <Badge key={c} variant="outline" className="border-emerald-300 text-emerald-800 bg-emerald-50">
                       {c}
                     </Badge>
@@ -252,7 +314,8 @@ export default function Home() {
                 <p className="text-[13px] leading-6 text-stone-500 bg-stone-50 border border-stone-200 rounded-xl p-3.5">
                   يتكرر هذا التوزيع الداخلي <strong className="text-stone-700">4 مرات في كل طابق</strong> ×
                   3 طوابق سكنية × 4 مبانٍ = <strong className="text-emerald-700">48 شقة</strong> بإجمالي
-                  240 غرفة رئيسية و96 حمّاماً (منها 48 حمّاماً ثانوياً بمساحة 1.00 م² لكل منها) في المشروع كاملاً.
+                  240 غرفة رئيسية و96 حمّاماً (منها 48 حمّاماً ثانوياً بمساحة 1.00 م² لكل منها) و48 شرفة
+                  ركنية (4 × 3 × 4) في المشروع كاملاً.
                 </p>
               </div>
             </div>
@@ -298,7 +361,7 @@ export default function Home() {
           <SectionHeader
             icon={<Table2 className="size-5" />}
             title="ميزان المساحات والحسابات"
-            subtitle="التحقق الرقمي من التزام التصميم بنسبة البناء 60% والمساحات المفتوحة 40%"
+            subtitle="التحقق الرقمي من التزام التصميم بنسبة البناء 60% والمساحات المفتوحة 40% ومن مواصفات الطاقة والخزانات والشرفات"
           />
 
           {/* التحقق الحسابي الإلزامي */}
@@ -312,6 +375,31 @@ export default function Home() {
                 <div key={c.expr} className="rounded-xl bg-white border border-emerald-200 px-4 py-3">
                   <p className="font-extrabold text-emerald-800 tabular-nums text-[15px]">{c.expr}</p>
                   <p className="text-[13px] font-semibold text-stone-600 mt-1">= {c.result}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* الفحوص البرمجية — تُحسب فعلياً من البيانات المركزية عند البناء */}
+          <div className="rounded-2xl border border-stone-200 bg-white p-5 mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <ShieldCheck className="size-5 text-emerald-700" />
+              <h3 className="font-extrabold text-stone-800">فحوص برمجية للقيم المشتقة — تُحسب فعلياً من مصدر البيانات الوحيد</h3>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {AUDIT.map((a) => (
+                <div
+                  key={a.label}
+                  className={`flex items-start gap-2 rounded-lg border px-3 py-2.5 text-[13px] font-semibold ${
+                    a.pass ? "border-emerald-200 bg-emerald-50 text-emerald-900" : "border-red-300 bg-red-50 text-red-800"
+                  }`}
+                >
+                  {a.pass ? (
+                    <CheckCircle2 className="size-4 shrink-0 mt-0.5 text-emerald-700" />
+                  ) : (
+                    <XCircle className="size-4 shrink-0 mt-0.5 text-red-600" />
+                  )}
+                  {a.label}
                 </div>
               ))}
             </div>
@@ -420,17 +508,17 @@ export default function Home() {
             {[
               {
                 t: "التزام بالنسب",
-                d: `نسبة البناء ${SITE.builtRatio}% كما هو مطلوب تماماً، مع بصمة موحدة ${BUILDING_FOOTPRINT} م² لكل مبنى تمنح شققاً متوازنة الإضاءة.`,
+                d: `نسبة البناء ${SITE.builtRatio}% كما هو مطلوب تماماً، مع بصمة موحدة ${BUILDING_FOOTPRINT} م² لكل مبنى تمنح شققاً متوازنة الإضاءة، والشرفات الركنية كابولية خارج حساب البصمة وخاضعة للكود المحلي.`,
                 c: "border-emerald-300 bg-emerald-50",
               },
               {
                 t: "كفاءة التوزيع",
-                d: "لب حركي مركزي 25.20 م² (درج بمتفلتين + مصعد + بهو + رافعة صحية) يخدم 4 شقق متطابقة بمداخل مباشرة: 4 × 68.70 + 25.20 = 300 م² بالضبط لكل طابق سكني.",
+                d: `لب حركي مركزي 25.20 م² يخدم 4 شقق × ${APARTMENT_GROSS.toFixed(2)} م² بمداخل مباشرة: 4 × ${APARTMENT_GROSS.toFixed(2)} + 25.20 = 300 م² بالضبط لكل طابق، ولكل شقة شرفة ركنية ${BALCONY.areaEach} م² عند زاوية المبنى (${BALCONY.projectArea} م² كابولية في المشروع).`,
                 c: "border-amber-300 bg-amber-50",
               },
               {
-                t: "استدامة تشغيلية",
-                d: "الأسطح الأربعة تولّد ≈ 116 ميجاواط ساعة سنوياً وتخزّن 32 م³ مياه علوياً، بما يخفض فاتورة الخدمات المشتركة نحو 40%.",
+                t: "استدامة وتحمّل السطح",
+                d: `الأسطح الأربعة تحمل ${ROOF_TOTALS.panels} لوحاً شمسياً (≈ ${ROOF_TOTALS.peakPowerKWp} ك.و ذروة — ${ROOF_TOTALS.annualMWh} م.و.س سنوياً تقديرياً) وتخزّن ${WATER_TANKS.projectL.toLocaleString("en-US")} لتر (${ROOF_TOTALS.tanksM3} م³) على ${ROOF_TOTALS.tankBases} قاعدة 1×1 م — بحمل مائي ≈ 16 طناً لكل مبنى يتطلب تحقق إنشائي قبل التنفيذ.`,
                 c: "border-teal-300 bg-teal-50",
               },
             ].map((s) => (
@@ -452,7 +540,7 @@ export default function Home() {
             </span>
             <div>
               <p className="font-bold text-white text-sm">المجمع السكني الأخضر — مخطط معماري أولي</p>
-              <p className="text-xs mt-0.5">قطعة 50 × 40 م | 4 مبانٍ | 48 شقة | مستوى تصميم تخطيطي قابل للتطوير التنفيذي</p>
+              <p className="text-xs mt-0.5">قطعة 50 × 40 م | 4 مبانٍ | 48 شقة + 48 شرفة ركنية | مستوى تصميم تخطيطي قابل للتطوير التنفيذي</p>
             </div>
           </div>
           <p className="text-xs text-stone-500 text-center sm:text-left">

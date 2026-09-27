@@ -142,10 +142,10 @@ export function BuildingExplorer() {
             badge={{ text: "300 م²", className: "bg-emerald-700" }}
             title="الطابق السكني النموذجي — أربع شقق حول اللب الحركي"
             features={[
-              { icon: BedDouble, text: "4 شقق متطابقة × 68.70 م² (5 غرف رئيسية + مطبخ منفصل + حمّامان + بهو)" },
-              { icon: DoorIcon, text: "لب حركي 25.2 م²: درج بمتفلتين محمي + مصعد 8 أشخاص + بهو توزيع يفتح على الشقق الأربعة" },
-              { icon: Sun, text: "كل غرف النوم والمعيشة على واجهة خارجية — والمطبخ والحمّامات تهوية ميكانيكية" },
-              { icon: Layers, text: "رافعة صحية وكهربائية مركزية عند اللب تخدم الحمّامات والمطابخ — والتفاصيل في قسم «الشقة النموذجية»" },
+              { icon: BedDouble, text: "4 شقق متطابقة × 68.70 م² (5 غرف رئيسية + مطبخ منفصل + حمّامان + بهو) وشرفة ركنية لكل شقة" },
+              { icon: Sun, text: "4 شرفات ركنية في الطابق عند زوايا المبنى — باب زجاجي من الصالة ودرابزين كامل (48 شرفة في المشروع)" },
+              { icon: Layers, text: "معالجة الشقق الشمالية: المعيشة في ركن الواجهتين والنوم الرئيسية على الواجهة الجانبية — لا تعتمد أي شقة على واجهة واحدة" },
+              { icon: ArrowUpDown, text: "لب حركي 25.2 م²: درج بمتفلتين محمي + مصعد 8 أشخاص + بهو توزيع يفتح على الشقق الأربعة" },
             ]}
             plan={<TypicalPlan />}
           />
@@ -155,12 +155,12 @@ export function BuildingExplorer() {
         <TabsContent value="roof" className="mt-4 space-y-5">
           <FloorLayout
             badge={{ text: "300 م²", className: "bg-amber-500" }}
-            title="السطح — منظومة الطاقة الشمسية وخزانات المياه"
+            title="السطح — المصفوفة الجنوبية والخزانات المركزية"
             features={[
-              { icon: Sun, text: "40 لوحاً كهروضوئياً (450 واط) بإنتاج ≈ 18 ك.و ذروة" },
-              { icon: Droplets, text: "4 خزانات مياه × 2000 لتر على قاعدة خرسانية" },
-              { icon: Flame, text: "سخّانان شمسيان 300 لتر لكل مدخل" },
-              { icon: ArrowUpDown, text: "بنتهاوس: درج وصول + غرفة آلات المصعد" },
+              { icon: Sun, text: "مصفوفة جنوبية متصلة: 16 صفاً (غرب ← شرق) × 3 ألواح (جنوب ← شمال) = 48 لوحاً × 450 واط ≈ 21.6 ك.و ذروة" },
+              { icon: Droplets, text: "16 خزاناً × 1000 لتر = 16 م³ على قواعد 1×1 م في المنطقة المركزية حول البنتهاوس" },
+              { icon: Flame, text: "الحمل المائي ≈ 16 طناً لكل مبنى — يتطلب تحقق إنشائي وتوزيع أحمال وقواعد وربطاً بالهيكل" },
+              { icon: ArrowUpDown, text: "بنتهاوس: درج وصول + غرفة آلات المصعد + مسارات صيانة محيطية وحول المصفوفة ودش برق" },
             ]}
             plan={<RoofPlan />}
           />
@@ -168,10 +168,10 @@ export function BuildingExplorer() {
           {/* إجماليات المنظومة للمشروع */}
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { v: `${ROOF_TOTALS.panels} لوحاً`, l: "إجمالي الألواح (4 مبانٍ)", c: "text-amber-700", bg: "bg-amber-50 border-amber-200" },
+              { v: `${ROOF_TOTALS.panels} لوحاً`, l: "إجمالي الألواح (4 مبانٍ × 48)", c: "text-amber-700", bg: "bg-amber-50 border-amber-200" },
               { v: `${ROOF_TOTALS.peakPowerKWp} ك.و`, l: "قدرة ذروة تركيبية", c: "text-amber-700", bg: "bg-amber-50 border-amber-200" },
-              { v: `≈ ${ROOF_TOTALS.annualMWh} م.و.س`, l: "توليد سنوي متوقع", c: "text-emerald-700", bg: "bg-emerald-50 border-emerald-200" },
-              { v: `${ROOF_TOTALS.tanksM3} م³`, l: "تخزين مياه علوي إجمالي", c: "text-teal-700", bg: "bg-teal-50 border-teal-200" },
+              { v: `${ROOF_TOTALS.tanksL.toLocaleString("en-US")} لتر`, l: "تخزين مياه علوي (64 خزاناً × 1000 لتر)", c: "text-teal-700", bg: "bg-teal-50 border-teal-200" },
+              { v: `${ROOF_TOTALS.tankBases} م²`, l: "إجمالي قواعد الخزانات (1×1 م)", c: "text-teal-700", bg: "bg-teal-50 border-teal-200" },
             ].map((s) => (
               <div key={s.l} className={`rounded-xl border p-4 text-center ${s.bg}`}>
                 <p className={`text-2xl font-extrabold ${s.c}`}>{s.v}</p>
@@ -180,9 +180,12 @@ export function BuildingExplorer() {
             ))}
           </div>
           <p className="text-sm text-stone-500 leading-7 bg-white border border-stone-200 rounded-xl p-4">
-            تغطي المنظومة الشمسية ما يقارب <strong className="text-stone-700">40% من استهلاك الخدمات المشتركة</strong>
-            (الإنارة العامة، المصاعد، المضخات) مع شبكة قياس مزدوجة، وفق اتجاه جنوبي مائل بزاوية ≈ 30° ومسافات
-            أمان وممشى صيانة بعرض 60 سم حول المصفوفات ونظام دش برق ممتد على الأسطح الأربعة.
+            المصفوفة مصفوفة واحدة متصلة في <strong className="text-stone-700">الجزء الجنوبي من السطح</strong>: الصفوف
+            الستة عشر متتابعة غرب ← شرق وكل صف 3 ألواح متتابعة جنوب ← شمال، بعرض لوح 1.13 م على الحافة الجنوبية
+            وطول 1.72 م جنوباً-شمالاً (لا تدوير 90°) وفاصل تثبيت 2 سم موثق. تخزين المياه 64,000 لتر (64 م³)
+            للمشروع بحمل مائي ≈ 16 طناً لكل مبنى قبل وزن الخزانات والقواعد — <strong className="text-stone-700">لا يُعد السطح جاهزاً إنشائياً</strong>{" "}
+            ويتطلب تحقق إنشائي وتوزيع أحمال وربطاً بالهيكل. تغطي المنظومة الشمسية جزءاً من استهلاك الخدمات المشتركة
+            (≈ 134 ميجاواط ساعة سنوياً — تقديري) مع شبكة قياس مزدوجة ونظام دش برق ممتد على الأسطح الأربعة.
           </p>
         </TabsContent>
       </Tabs>

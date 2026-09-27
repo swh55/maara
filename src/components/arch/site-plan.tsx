@@ -43,6 +43,7 @@ export function SitePlan() {
           <InfoRow label="التوجيه الشمسي" value="الواجهات الطويلة شمال – جنوب" />
           <InfoRow label="عدد الطوابق" value="قبو + أرضي + 3 سكنية + سطح" />
           <InfoRow label="الشقق في المبنى" value="12 شقة (4 شقق × 3 طوابق)" />
+          <InfoRow label="الشرفات" value="12 شرفة ركنية (4 × 3 طوابق)" />
           <InfoRow label="الغرف إجمالاً" value="60 غرفة رئيسية + 24 حمّاماً + 12 بهو" />
           <InfoRow label="الرافعة (مصعد)" value="مصعد واحد — 8 أشخاص" />
           <InfoRow label="مواقف القبو" value="5 مواقف (2.5 × 5.0 م) + مخزنان" />
@@ -51,7 +52,8 @@ export function SitePlan() {
           <div className="rounded-lg bg-amber-50 border border-amber-200 p-3">
             <p className="font-bold text-amber-800 text-[13px] mb-1">السطح المجهّز</p>
             <p className="text-[13px] leading-6 text-amber-900/80">
-              40 لوحاً كهروضوئياً (≈ 18 ك.و) + 4 خزانات مياه 2000 لتر + سخّانان شمسيان + ممشى صيانة ودش برق.
+              48 لوحاً شمسياً (16 صف × 3 — ≈ 21.6 ك.و) في مصفوفة جنوبية متصلة + 16 خزاناً × 1000 لتر
+              (16 م³) على قواعد 1×1 م حول اللب + سخّانان شمسيان + ممشى صيانة ودش برق.
             </p>
           </div>
           <p className="text-xs text-stone-400">مرّر المؤشر فوق المباني في المخطط أو انقر عليها لاستعراض التفاصيل.</p>
